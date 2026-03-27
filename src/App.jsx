@@ -8,6 +8,7 @@ import EmployeeShiftDistribution from './components/EmployeeShiftDistribution';
 import PositionFrequencyOverTime from './components/PositionFrequencyOverTime';
 import FairnessScore from './components/FairnessScore';
 import DayOfWeekAnalysis from './components/DayOfWeekAnalysis';
+import OutletDistribution from './components/OutletDistribution';
 import EmployeeDetail from './components/EmployeeDetail';
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
     endDate: '',
     employees: [],
     workgroup: 'All',
+    outlet: 'All',
   });
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
@@ -42,6 +44,7 @@ export default function App() {
       endDate: filters.endDate ? new Date(filters.endDate + 'T23:59:59') : null,
       employees: filters.employees,
       workgroup: filters.workgroup,
+      outlet: filters.outlet,
     });
   }, [rawData, filters]);
 
@@ -68,6 +71,7 @@ export default function App() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         <SummaryCards data={filteredData} />
         <PositionRotationChart data={filteredData} onEmployeeClick={handleEmployeeClick} />
+        <OutletDistribution data={filteredData} onEmployeeClick={handleEmployeeClick} />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <DayOfWeekAnalysis data={filteredData} />

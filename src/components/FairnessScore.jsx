@@ -6,24 +6,32 @@ export default function FairnessScore({ data, onEmployeeClick }) {
     const byEmployee = {};
     working.forEach(r => {
       if (!byEmployee[r.name]) {
-        byEmployee[r.name] = { total: 0, weekend: 0, positions: new Set() };
+        byEmployee[r.name] = { total: 0, weekend: 0, positions: new Set(), outlets: {} };
       }
       byEmployee[r.name].total++;
       const day = r.parsedDate.getDay();
       if (day === 0 || day === 5 || day === 6) byEmployee[r.name].weekend++;
       if (r.cleanPosition !== 'Unassigned') byEmployee[r.name].positions.add(r.cleanPosition);
+      byEmployee[r.name].outlets[r.outlet] = (byEmployee[r.name].outlets[r.outlet] || 0) + 1;
     });
 
     return Object.entries(byEmployee)
       .map(([name, stats]) => {
         const weekendPct = stats.total > 0 ? (stats.weekend / stats.total * 100) : 0;
         const variety = stats.positions.size;
+        // Primary outlet = most frequent
+        const outletEntries = Object.entries(stats.outlets).sort((a, b) => b[1] - a[1]);
+        const primaryOutlet = outletEntries[0]?.[0] || 'Unknown';
+        const primaryCount = outletEntries[0]?.[1] || 0;
+        const crossOutletPct = stats.total > 0 ? ((stats.total - primaryCount) / stats.total * 100) : 0;
         return {
           name,
           total: stats.total,
           weekend: stats.weekend,
           weekendPct,
           variety,
+          primaryOutlet,
+          crossOutletPct,
         };
       })
       .sort((a, b) => b.total - a.total);
@@ -45,6 +53,8 @@ export default function FairnessScore({ data, onEmployeeClick }) {
               <th className="text-right text-slate-400 font-medium py-2 px-3">Weekend Shifts</th>
               <th className="text-right text-slate-400 font-medium py-2 px-3">Weekend %</th>
               <th className="text-right text-slate-400 font-medium py-2 px-3">Position Variety</th>
+              <th className="text-left text-slate-400 font-medium py-2 px-3">Primary Outlet</th>
+              <th className="text-right text-slate-400 font-medium py-2 px-3">Cross-Outlet %</th>
             </tr>
           </thead>
           <tbody>
@@ -65,6 +75,10 @@ export default function FairnessScore({ data, onEmployeeClick }) {
                   </td>
                   <td className={`py-2 px-3 text-right ${lowVariety ? 'text-red-400 font-semibold' : 'text-slate-300'}`}>
                     {row.variety} positions
+                  </td>
+                  <td className="py-2 px-3 text-left text-slate-300 whitespace-nowrap">{row.primaryOutlet}</td>
+                  <td className={`py-2 px-3 text-right ${row.crossOutletPct > 30 ? 'text-cyan-400 font-semibold' : 'text-slate-300'}`}>
+                    {row.crossOutletPct.toFixed(1)}%
                   </td>
                 </tr>
               );

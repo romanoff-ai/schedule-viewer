@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { POSITION_COLORS } from '../utils/dataProcessing';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import { POSITION_COLORS, OUTLET_COLORS } from '../utils/dataProcessing';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -36,11 +37,29 @@ export default function EmployeeDetail({ data, employeeName, onClose }) {
     // Average shift length
     const avgHours = working.length > 0 ? totalHours / working.length : 0;
 
+    // Outlet breakdown
+    const outletCounts = {};
+    working.forEach(r => {
+      outletCounts[r.outlet] = (outletCounts[r.outlet] || 0) + 1;
+    });
+    const outletBreakdown = Object.entries(outletCounts)
+      .map(([outlet, count]) => ({ name: outlet, value: count }))
+      .sort((a, b) => b.value - a.value);
+
+    // Outlet timeline (per month)
+    const outletByMonth = {};
+    working.forEach(r => {
+      if (!outletByMonth[r.monthKey]) outletByMonth[r.monthKey] = {};
+      outletByMonth[r.monthKey][r.outlet] = (outletByMonth[r.monthKey][r.outlet] || 0) + 1;
+    });
+
     return {
       totalShifts: working.length,
       totalHours,
       avgHours,
       positionBreakdown,
+      outletBreakdown,
+      outletByMonth,
       byMonth,
       dayDist,
       workgroup: shifts[0]?.workgroup || 'Unknown',
@@ -111,6 +130,85 @@ export default function EmployeeDetail({ data, employeeName, onClose }) {
               })}
             </div>
           </div>
+
+          {/* Outlet breakdown pie chart */}
+          {empData.outletBreakdown.length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold text-slate-300 mb-2">Outlet Breakdown</h3>
+              <div className="flex items-center gap-4">
+                <div className="w-40 h-40 shrink-0">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={empData.outletBreakdown}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={65}
+                        innerRadius={30}
+                      >
+                        {empData.outletBreakdown.map(entry => (
+                          <Cell key={entry.name} fill={OUTLET_COLORS[entry.name] || '#475569'} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: 8 }}
+                        itemStyle={{ color: '#e2e8f0' }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="space-y-1 text-xs">
+                  {empData.outletBreakdown.map(entry => {
+                    const pct = (entry.value / empData.totalShifts * 100).toFixed(0);
+                    return (
+                      <div key={entry.name} className="flex items-center gap-2">
+                        <span className="inline-block w-2.5 h-2.5 rounded-sm shrink-0" style={{ backgroundColor: OUTLET_COLORS[entry.name] || '#475569' }} />
+                        <span className="text-slate-300">{entry.name}</span>
+                        <span className="text-slate-500">{entry.value} ({pct}%)</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Outlet timeline */}
+          {Object.keys(empData.outletByMonth).length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold text-slate-300 mb-2">Outlet Over Time</h3>
+              <div className="space-y-1">
+                {Object.keys(empData.outletByMonth).sort().slice(-12).map(monthKey => {
+                  const [year, month] = monthKey.split('-');
+                  const outlets = empData.outletByMonth[monthKey];
+                  const monthTotal = Object.values(outlets).reduce((s, v) => s + v, 0);
+                  return (
+                    <div key={monthKey} className="flex items-center gap-2">
+                      <span className="text-[10px] text-slate-400 w-14 shrink-0">
+                        {MONTHS[parseInt(month) - 1]} {year.slice(2)}
+                      </span>
+                      <div className="flex-1 flex h-4 rounded overflow-hidden">
+                        {Object.entries(outlets).sort((a, b) => b[1] - a[1]).map(([outlet, count]) => (
+                          <div
+                            key={outlet}
+                            className="h-full"
+                            style={{
+                              width: `${(count / monthTotal) * 100}%`,
+                              backgroundColor: OUTLET_COLORS[outlet] || '#475569',
+                            }}
+                            title={`${outlet}: ${count} shifts`}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-[10px] text-slate-500 w-6 text-right">{monthTotal}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Recent months mini-calendar */}
           <div>

@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
+import { ALL_OUTLETS } from '../utils/dataProcessing';
 
 const WORKGROUP_OPTIONS = ['All', 'Bartenders', 'Barbacks'];
+const OUTLET_OPTIONS = ALL_OUTLETS;
 
 export default function Header({ allEmployees, filters, onFilterChange }) {
   const [empDropdownOpen, setEmpDropdownOpen] = useState(false);
@@ -111,6 +113,26 @@ export default function Header({ allEmployees, filters, onFilterChange }) {
                   onClick={() => onFilterChange({ ...filters, workgroup: opt })}
                   className={`px-3 py-1.5 text-sm transition-colors ${
                     filters.workgroup === opt
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                  }`}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Outlet filter */}
+          <div>
+            <label className="block text-xs text-slate-400 mb-1">Outlet</label>
+            <div className="flex flex-wrap rounded-lg overflow-hidden border border-slate-600">
+              {OUTLET_OPTIONS.map(opt => (
+                <button
+                  key={opt}
+                  onClick={() => onFilterChange({ ...filters, outlet: opt })}
+                  className={`px-3 py-1.5 text-sm transition-colors ${
+                    (filters.outlet || 'All') === opt
                       ? 'bg-blue-600 text-white'
                       : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
                   }`}
