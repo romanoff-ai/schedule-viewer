@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { POSITION_COLORS } from '../utils/dataProcessing';
-import { DAYS, SCHEDULABLE_POSITIONS } from '../utils/schedulerUtils';
+import { DAYS, SCHEDULABLE_POSITIONS, OUTLETS } from '../utils/schedulerUtils';
 
 export default function EmployeePreferences({ preferences, onChange }) {
   const [expanded, setExpanded] = useState(null);
@@ -36,6 +36,15 @@ export default function EmployeePreferences({ preferences, onChange }) {
     updatePref(name, 'preferredPositions', list);
   };
 
+  const toggleOutlet = (name, outlet) => {
+    const pref = preferences[name];
+    const outlets = [...(pref.trainedOutlets || ['Peacock'])];
+    const idx = outlets.indexOf(outlet);
+    if (idx >= 0) outlets.splice(idx, 1);
+    else outlets.push(outlet);
+    updatePref(name, 'trainedOutlets', outlets);
+  };
+
   const toggleDayOff = (name, day) => {
     const pref = preferences[name];
     const days = [...pref.preferredDaysOff];
@@ -67,7 +76,7 @@ export default function EmployeePreferences({ preferences, onChange }) {
                   <span className="text-xs text-slate-400">{pref.role}</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="flex gap-1">
+                  <div className="flex gap-1 flex-wrap">
                     {pref.preferredPositions.slice(0, 3).map(pos => (
                       <span
                         key={pos}
@@ -75,6 +84,14 @@ export default function EmployeePreferences({ preferences, onChange }) {
                         style={{ backgroundColor: POSITION_COLORS[pos] + '30', color: POSITION_COLORS[pos] }}
                       >
                         {pos}
+                      </span>
+                    ))}
+                    {(pref.trainedOutlets || ['Peacock']).filter(o => o !== 'Peacock').map(outlet => (
+                      <span
+                        key={outlet}
+                        className="text-xs px-2 py-0.5 rounded bg-emerald-900/40 text-emerald-400 border border-emerald-800"
+                      >
+                        {outlet}
                       </span>
                     ))}
                   </div>
@@ -177,22 +194,30 @@ export default function EmployeePreferences({ preferences, onChange }) {
                     </div>
                   </div>
 
-                  {/* Cross-Outlet */}
-                  <div className="flex items-center gap-3">
-                    <label className="text-sm text-slate-400">Cross-outlet willing</label>
-                    <button
-                      onClick={() => updatePref(name, 'crossOutletWilling', !pref.crossOutletWilling)}
-                      className={`relative w-10 h-5 rounded-full transition-colors ${
-                        pref.crossOutletWilling ? 'bg-blue-600' : 'bg-slate-600'
-                      }`}
-                    >
-                      <span
-                        className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
-                          pref.crossOutletWilling ? 'translate-x-5' : 'translate-x-0.5'
-                        }`}
-                      />
-                    </button>
-                    <span className="text-xs text-slate-500">(Kappo, Goldies, Quill)</span>
+                  {/* Trained Outlets */}
+                  <div>
+                    <label className="text-sm text-slate-400 block mb-2">Trained Outlets</label>
+                    <div className="flex flex-wrap gap-2">
+                      {OUTLETS.map(outlet => {
+                        const isChecked = (pref.trainedOutlets || ['Peacock']).includes(outlet);
+                        const isPeacock = outlet === 'Peacock';
+                        return (
+                          <button
+                            key={outlet}
+                            onClick={() => !isPeacock && toggleOutlet(name, outlet)}
+                            disabled={isPeacock}
+                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${
+                              isChecked
+                                ? 'bg-emerald-900/40 text-emerald-400 border-emerald-700'
+                                : 'bg-slate-900/50 text-slate-500 border-slate-700 hover:border-slate-500'
+                            } ${isPeacock ? 'opacity-70 cursor-default' : 'cursor-pointer'}`}
+                          >
+                            {isChecked ? '✓ ' : ''}{outlet}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <p className="text-xs text-slate-500 mt-1">Peacock is default for all staff</p>
                   </div>
                 </div>
               )}

@@ -2,8 +2,19 @@ import { ALL_POSITIONS } from './dataProcessing';
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const SCHEDULABLE_POSITIONS = ['Bar Top', 'Service Well', 'Floor', 'Patio Bar', 'Kappo', 'Goldies', 'Quill'];
+const OUTLETS = ['Peacock', 'Kappo', 'Goldies', 'Quill'];
 
-export { DAYS, SCHEDULABLE_POSITIONS };
+const POSITION_OUTLET_MAP = {
+  'Bar Top': 'Peacock',
+  'Service Well': 'Peacock',
+  'Floor': 'Peacock',
+  'Patio Bar': 'Peacock',
+  'Kappo': 'Kappo',
+  'Goldies': 'Goldies',
+  'Quill': 'Quill',
+};
+
+export { DAYS, SCHEDULABLE_POSITIONS, OUTLETS, POSITION_OUTLET_MAP };
 
 // --- Historical Analysis ---
 
@@ -59,8 +70,13 @@ export function analyzeEmployeeHistory(data) {
       .map(([day]) => day)
       .slice(0, 2);
 
-    // Cross-outlet
-    const crossOutlet = emp.outletSet.size > 1;
+    // Trained outlets — always includes Peacock, plus any non-Peacock outlets worked historically
+    const trainedOutlets = ['Peacock'];
+    for (const outlet of emp.outletSet) {
+      if (outlet !== 'Peacock' && OUTLETS.includes(outlet) && !trainedOutlets.includes(outlet)) {
+        trainedOutlets.push(outlet);
+      }
+    }
 
     results[name] = {
       name,
@@ -72,7 +88,7 @@ export function analyzeEmployeeHistory(data) {
       avgShiftsPerWeek,
       preferredDaysOff: typicalDaysOff,
       dayOfWeekCounts: emp.dayOfWeekCounts,
-      crossOutletWilling: crossOutlet,
+      trainedOutlets,
       totalShifts,
     };
   }
@@ -95,7 +111,7 @@ export function buildDefaultPreferences(historyAnalysis) {
         acc[day] = !analysis.preferredDaysOff.includes(day);
         return acc;
       }, {}),
-      crossOutletWilling: analysis.crossOutletWilling,
+      trainedOutlets: analysis.trainedOutlets || ['Peacock'],
     };
   }
   return prefs;
@@ -250,9 +266,9 @@ function canAssign(name, position, day, preferences, assignedToday, weekShifts) 
   if (!pref.availability[day]) return false;
   if (weekShifts[name] >= pref.maxShiftsPerWeek) return false;
 
-  // Check cross-outlet
-  const outletPositions = ['Kappo', 'Goldies', 'Quill'];
-  if (outletPositions.includes(position) && !pref.crossOutletWilling) return false;
+  // Check trained outlets
+  const requiredOutlet = POSITION_OUTLET_MAP[position];
+  if (requiredOutlet && !(pref.trainedOutlets || ['Peacock']).includes(requiredOutlet)) return false;
 
   return true;
 }
