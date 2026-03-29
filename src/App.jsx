@@ -4,6 +4,7 @@ import { processData } from './utils/dataProcessing';
 import NavBar from './components/NavBar';
 import AnalyticsPage from './components/AnalyticsPage';
 import SchedulerPage from './components/SchedulerPage';
+import RequestOffsPage from './components/RequestOffsPage';
 
 export default function App() {
   const [rawData, setRawData] = useState(null);
@@ -32,6 +33,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<AnalyticsPage data={rawData} />} />
         <Route path="/scheduler" element={<SchedulerPage data={rawData} />} />
+        <Route path="/request-offs" element={<RequestOffsPage data={rawData} />} />
       </Routes>
     </div>
   );

@@ -14,6 +14,7 @@ export default function NavBar() {
         <span className="text-white font-bold text-lg mr-6">Schedule Viewer</span>
         <NavLink to="/" className={linkClass} end>Analytics</NavLink>
         <NavLink to="/scheduler" className={linkClass}>Scheduler</NavLink>
+        <NavLink to="/request-offs" className={linkClass}>Request Offs</NavLink>
       </div>
     </nav>
   );
