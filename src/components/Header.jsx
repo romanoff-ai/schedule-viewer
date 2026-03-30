@@ -1,15 +1,50 @@
 import { useState, useRef, useEffect } from 'react';
 import { ALL_OUTLETS } from '../utils/dataProcessing';
 
-const WORKGROUP_OPTIONS = ['All', 'Bartenders', 'Barbacks'];
 const OUTLET_OPTIONS = ALL_OUTLETS;
 
-export default function Header({ allEmployees, filters, onFilterChange }) {
+function getPresetDates(preset) {
+  const today = new Date();
+  const end = today.toISOString().split('T')[0];
+  let startDate;
+  switch (preset) {
+    case '30D': {
+      const d = new Date(today); d.setDate(d.getDate() - 30); startDate = d.toISOString().split('T')[0]; break;
+    }
+    case '60D': {
+      const d = new Date(today); d.setDate(d.getDate() - 60); startDate = d.toISOString().split('T')[0]; break;
+    }
+    case '90D': {
+      const d = new Date(today); d.setDate(d.getDate() - 90); startDate = d.toISOString().split('T')[0]; break;
+    }
+    case '6M': {
+      const d = new Date(today); d.setMonth(d.getMonth() - 6); startDate = d.toISOString().split('T')[0]; break;
+    }
+    case '1Y': {
+      const d = new Date(today); d.setFullYear(d.getFullYear() - 1); startDate = d.toISOString().split('T')[0]; break;
+    }
+    case '2Y': {
+      const d = new Date(today); d.setFullYear(d.getFullYear() - 2); startDate = d.toISOString().split('T')[0]; break;
+    }
+    case 'YTD': {
+      startDate = `${today.getFullYear()}-01-01`; break;
+    }
+    default: startDate = '';
+  }
+  return { startDate, endDate: end };
+}
+
+const DATE_PRESETS = ['30D', '60D', '90D', '6M', '1Y', '2Y', 'YTD'];
+
+export default function Header({ allEmployees, allWorkgroups, filters, onFilterChange }) {
   const [empDropdownOpen, setEmpDropdownOpen] = useState(false);
   const [filtersCollapsed, setFiltersCollapsed] = useState(false);
-  const [filtersExpanded, setFiltersExpanded] = useState(false); // manual expand when collapsed
+  const [filtersExpanded, setFiltersExpanded] = useState(false);
+  const [activePreset, setActivePreset] = useState(null);
   const dropdownRef = useRef(null);
   const lastScrollY = useRef(0);
+
+  const workgroupOptions = ['All', ...(allWorkgroups || [])];
 
   // Close employee dropdown when clicking outside
   useEffect(() => {
@@ -27,11 +62,9 @@ export default function Header({ allEmployees, filters, onFilterChange }) {
     function handleScroll() {
       const currentY = window.scrollY;
       if (currentY > 100 && currentY > lastScrollY.current) {
-        // Scrolling down past 100px → collapse
         setFiltersCollapsed(true);
         setFiltersExpanded(false);
       } else if (currentY < lastScrollY.current - 10) {
-        // Scrolling up by at least 10px → expand
         setFiltersCollapsed(false);
         setFiltersExpanded(false);
       }
@@ -53,9 +86,19 @@ export default function Header({ allEmployees, filters, onFilterChange }) {
     onFilterChange({ ...filters, employees: [] });
   };
 
+  const handleDateChange = (key, value) => {
+    setActivePreset(null);
+    onFilterChange({ ...filters, [key]: value });
+  };
+
+  const applyPreset = (preset) => {
+    const { startDate, endDate } = getPresetDates(preset);
+    setActivePreset(preset);
+    onFilterChange({ ...filters, startDate, endDate });
+  };
+
   const showFilters = !filtersCollapsed || filtersExpanded;
 
-  // Summary text for collapsed state
   const activeFilterCount = [
     filters.employees.length > 0,
     (filters.workgroup && filters.workgroup !== 'All'),
@@ -64,6 +107,10 @@ export default function Header({ allEmployees, filters, onFilterChange }) {
     filters.endDate,
   ].filter(Boolean).length;
 
+  const pageTitle = (!filters.workgroup || filters.workgroup === 'All')
+    ? 'Schedule Analytics'
+    : `${filters.workgroup} Schedule Analytics`;
+
   return (
     <header className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-700/50 px-4 sm:px-6 transition-all duration-300">
       <div className="max-w-7xl mx-auto">
@@ -71,10 +118,9 @@ export default function Header({ allEmployees, filters, onFilterChange }) {
         {/* Always-visible title row */}
         <div className={`flex items-center justify-between transition-all duration-300 ${filtersCollapsed ? 'py-2' : 'pt-4 pb-0'}`}>
           <h1 className={`font-bold text-white transition-all duration-300 ${filtersCollapsed ? 'text-base sm:text-lg' : 'text-2xl sm:text-3xl'}`}>
-            Peacock Bar Schedule Analytics
+            {pageTitle}
           </h1>
 
-          {/* Collapsed state: show filter toggle button */}
           {filtersCollapsed && (
             <button
               onClick={() => setFiltersExpanded(prev => !prev)}
@@ -103,29 +149,58 @@ export default function Header({ allEmployees, filters, onFilterChange }) {
         {/* Collapsible filter section */}
         <div
           className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            showFilters ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+            showFilters ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
           <div className="flex flex-wrap gap-3 items-end py-4">
             {/* Date range */}
-            <div className="flex gap-2 items-center">
-              <div>
-                <label className="block text-xs text-slate-400 mb-1">Start Date</label>
-                <input
-                  type="date"
-                  value={filters.startDate || ''}
-                  onChange={e => onFilterChange({ ...filters, startDate: e.target.value })}
-                  className="bg-slate-800 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2 items-center">
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Start Date</label>
+                  <input
+                    type="date"
+                    value={filters.startDate || ''}
+                    onChange={e => handleDateChange('startDate', e.target.value)}
+                    className="bg-slate-800 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">End Date</label>
+                  <input
+                    type="date"
+                    value={filters.endDate || ''}
+                    onChange={e => handleDateChange('endDate', e.target.value)}
+                    className="bg-slate-800 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
               </div>
-              <div>
-                <label className="block text-xs text-slate-400 mb-1">End Date</label>
-                <input
-                  type="date"
-                  value={filters.endDate || ''}
-                  onChange={e => onFilterChange({ ...filters, endDate: e.target.value })}
-                  className="bg-slate-800 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+              {/* Date range presets */}
+              <div className="flex gap-1.5 flex-wrap">
+                {DATE_PRESETS.map(preset => (
+                  <button
+                    key={preset}
+                    onClick={() => applyPreset(preset)}
+                    className={`px-2.5 py-1 text-xs rounded-md font-medium transition-colors border ${
+                      activePreset === preset
+                        ? 'bg-blue-600 border-blue-500 text-white'
+                        : 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white'
+                    }`}
+                  >
+                    {preset}
+                  </button>
+                ))}
+                {(filters.startDate || filters.endDate) && (
+                  <button
+                    onClick={() => {
+                      setActivePreset(null);
+                      onFilterChange({ ...filters, startDate: '', endDate: '' });
+                    }}
+                    className="px-2.5 py-1 text-xs rounded-md font-medium transition-colors border bg-slate-800 border-slate-600 text-slate-500 hover:text-red-400 hover:border-red-500/50"
+                  >
+                    Clear
+                  </button>
+                )}
               </div>
             </div>
 
@@ -173,38 +248,42 @@ export default function Header({ allEmployees, filters, onFilterChange }) {
               )}
             </div>
 
-            {/* Workgroup toggle */}
-            <div>
+            {/* Workgroup — horizontally scrollable pill bar */}
+            <div className="flex-1 min-w-0">
               <label className="block text-xs text-slate-400 mb-1">Workgroup</label>
-              <div className="flex rounded-lg overflow-hidden border border-slate-600">
-                {WORKGROUP_OPTIONS.map(opt => (
-                  <button
-                    key={opt}
-                    onClick={() => onFilterChange({ ...filters, workgroup: opt })}
-                    className={`px-3 py-1.5 text-sm transition-colors ${
-                      filters.workgroup === opt
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                    }`}
-                  >
-                    {opt}
-                  </button>
-                ))}
+              <div className="overflow-x-auto scrollbar-hide">
+                <div className="flex gap-1 min-w-max">
+                  {workgroupOptions.map(opt => (
+                    <button
+                      key={opt}
+                      onClick={() => onFilterChange({ ...filters, workgroup: opt })}
+                      className={`px-3 py-1.5 text-sm rounded-full whitespace-nowrap transition-colors border ${
+                        (filters.workgroup || 'All') === opt
+                          ? 'bg-blue-600 border-blue-500 text-white'
+                          : 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white'
+                      }`}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
+          </div>
 
-            {/* Outlet filter */}
-            <div>
-              <label className="block text-xs text-slate-400 mb-1">Outlet</label>
-              <div className="flex flex-wrap rounded-lg overflow-hidden border border-slate-600">
+          {/* Outlet filter — full-width scrollable row */}
+          <div className="pb-4">
+            <label className="block text-xs text-slate-400 mb-1">Outlet</label>
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="flex gap-1 min-w-max">
                 {OUTLET_OPTIONS.map(opt => (
                   <button
                     key={opt}
                     onClick={() => onFilterChange({ ...filters, outlet: opt })}
-                    className={`px-3 py-1.5 text-sm transition-colors ${
+                    className={`px-3 py-1.5 text-sm rounded-full whitespace-nowrap transition-colors border ${
                       (filters.outlet || 'All') === opt
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                        ? 'bg-blue-600 border-blue-500 text-white'
+                        : 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white'
                     }`}
                   >
                     {opt}

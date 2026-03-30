@@ -216,11 +216,17 @@ export function filterData(data, { startDate, endDate, employees, workgroup, out
     if (startDate && record.parsedDate < startDate) return false;
     if (endDate && record.parsedDate > endDate) return false;
     if (employees.length > 0 && !employees.includes(record.name)) return false;
-    if (workgroup === 'Bartenders' && record.workgroup !== 'Peacock Bar') return false;
-    if (workgroup === 'Barbacks' && record.workgroup !== 'Peacock Barback') return false;
+    if (workgroup && workgroup !== 'All' && record.workgroup !== workgroup) return false;
     if (outlet && outlet !== 'All' && record.outlet !== outlet) return false;
     return true;
   });
+}
+
+export function getUniqueWorkgroups(data) {
+  if (!data || !data.length) return [];
+  const wgs = new Set();
+  data.forEach(r => { if (r.workgroup) wgs.add(r.workgroup); });
+  return [...wgs].sort();
 }
 
 export const ALL_OUTLETS = ['All', 'Peacock', 'Kappo Kappo', 'Goldies', 'Quill', 'Quill/Goldies', 'Peacock (Patio)', 'Banquet'];

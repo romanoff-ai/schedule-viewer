@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { filterData, getFormerEmployees } from '../utils/dataProcessing';
+import { filterData, getFormerEmployees, getUniqueWorkgroups } from '../utils/dataProcessing';
 import Header from './Header';
 import SummaryCards from './SummaryCards';
 import PositionRotationChart from './PositionRotationChart';
@@ -23,6 +23,8 @@ export default function AnalyticsPage({ data }) {
   const [hideFormer, setHideFormer] = useState(true);
 
   const formerEmployees = useMemo(() => getFormerEmployees(data), [data]);
+
+  const allWorkgroups = useMemo(() => getUniqueWorkgroups(data), [data]);
 
   const allEmployees = useMemo(() => {
     if (!data) return [];
@@ -51,6 +53,7 @@ export default function AnalyticsPage({ data }) {
     <>
       <Header
         allEmployees={allEmployees}
+        allWorkgroups={allWorkgroups}
         filters={filters}
         onFilterChange={setFilters}
       />

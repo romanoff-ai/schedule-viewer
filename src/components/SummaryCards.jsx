@@ -13,8 +13,9 @@ export default function SummaryCards({ data }) {
     const dates = working.map(r => r.parsedDate.getTime());
     const minDate = Math.min(...dates);
     const maxDate = Math.max(...dates);
-    const weeks = Math.max(1, (maxDate - minDate) / (7 * 24 * 60 * 60 * 1000));
-    const avgPerWeek = (totalShifts / weeks).toFixed(1);
+    const rawWeeks = (maxDate - minDate) / (7 * 24 * 60 * 60 * 1000);
+    const weeks = isFinite(rawWeeks) && rawWeeks > 0 ? rawWeeks : 0;
+    const avgPerWeek = weeks === 0 ? '—' : (totalShifts / weeks).toFixed(1);
 
     // Most common position
     const posCounts = {};
