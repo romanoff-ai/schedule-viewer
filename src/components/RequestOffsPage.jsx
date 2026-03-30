@@ -3,7 +3,7 @@ import { getFormerEmployees } from '../utils/dataProcessing';
 
 // ---------- helpers ----------
 
-const REQ_OFF_PATTERNS = ['req. off', 'req off', 'rto', 'r/off', 'offpsnl', 'offvac', 'req off'];
+const REQ_OFF_PATTERNS = ['req. off', 'req off', 'rto', 'r/off', 'offvac'];
 
 export function isRequestOff(record) {
   const s = (record.schedule || '').trim().toLowerCase();
@@ -14,8 +14,16 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 function parseDate(dateStr) {
-  const [m, d, y] = dateStr.split('/').map(Number);
+  if (!dateStr) return new Date(NaN);
+  const parts = dateStr.split('/');
+  if (parts.length !== 3) return new Date(NaN);
+  const [m, d, y] = parts.map(Number);
+  if (!m || !d || !y) return new Date(NaN);
   return new Date(y, m - 1, d);
+}
+
+function isValidDate(d) {
+  return d instanceof Date && !isNaN(d.getTime());
 }
 
 function getDaysInMonth(year, month) {
@@ -32,6 +40,7 @@ export default function RequestOffsPage({ data }) {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [hideFormer, setHideFormer] = useState(true);
   const [hoveredCell, setHoveredCell] = useState(null); // { monthIdx, day, x, y, rect }
+  const [expandedEmployee, setExpandedEmployee] = useState(null); // for mini profile dropdown
   const heatmapRef = useRef(null);
 
   const formerEmployees = useMemo(() => getFormerEmployees(data), [data]);
@@ -47,7 +56,10 @@ export default function RequestOffsPage({ data }) {
 
   // available years
   const years = useMemo(() => {
-    const ys = new Set(reqOffRecords.map(r => parseDate(r.date).getFullYear()));
+    const ys = new Set(reqOffRecords.map(r => {
+      const d = parseDate(r.date);
+      return isValidDate(d) ? d.getFullYear() : null;
+    }).filter(Boolean));
     return Array.from(ys).sort();
   }, [reqOffRecords]);
 
@@ -87,8 +99,9 @@ export default function RequestOffsPage({ data }) {
       const dowCounts = {};
       empReqOff.forEach(r => {
         const d = parseDate(r.date);
+        if (!isValidDate(d)) return;
         const dow = DOW[d.getDay()];
-        dowCounts[dow] = (dowCounts[dow] || 0) + 1;
+        if (dow) dowCounts[dow] = (dowCounts[dow] || 0) + 1;
       });
       const topDow = Object.keys(dowCounts).sort((a, b) => dowCounts[b] - dowCounts[a])[0] || '—';
 
@@ -186,6 +199,37 @@ export default function RequestOffsPage({ data }) {
     return { records, dowBreakdown, monthBreakdown };
   }, [selectedEmployee, reqOffRecords]);
 
+  // Mini profile: last 10 req-off dates for a given employee
+  const getMiniProfile = useCallback((name) => {
+    const seen = new Set();
+    const records = reqOffRecords
+      .filter(r => r.name === name)
+      .filter(r => {
+        const key = `${r.name}|${r.date}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
+      .map(r => {
+        const d = parseDate(r.date);
+        return {
+          date: r.date,
+          parsedDate: isValidDate(d) ? d : null,
+          workgroup: r.outlet || r.workgroup || '—',
+          type: (r.schedule || '').split('\n')[0].trim() || r.schedule || '—',
+        };
+      })
+      .filter(r => r.parsedDate)
+      .sort((a, b) => b.parsedDate - a.parsedDate)
+      .slice(0, 10);
+    return records;
+  }, [reqOffRecords]);
+
+  function formatMiniDate(d) {
+    if (!d) return '—';
+    return `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+  }
+
   const SortIcon = ({ field }) => {
     if (sortField !== field) return <span className="text-slate-600 ml-1">↕</span>;
     return <span className="text-blue-400 ml-1">{sortDir === 'asc' ? '↑' : '↓'}</span>;
@@ -223,7 +267,7 @@ export default function RequestOffsPage({ data }) {
       <div className="bg-slate-800 rounded-xl border border-slate-700">
         <div className="px-6 py-4 border-b border-slate-700">
           <h2 className="text-lg font-semibold text-white">Request-Off Frequency by Employee</h2>
-          <p className="text-slate-400 text-sm">Click a column header to sort · Click an employee to see their timeline</p>
+          <p className="text-slate-400 text-sm">Click a column header to sort · Click a name for last 10 dates · Click a row to see full timeline</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -248,31 +292,72 @@ export default function RequestOffsPage({ data }) {
             </thead>
             <tbody>
               {sortedTable.map((emp, i) => (
-                <tr
-                  key={emp.name}
-                  className={`border-t border-slate-700 cursor-pointer transition-colors ${
-                    selectedEmployee === emp.name ? 'bg-blue-900/30' : i % 2 === 0 ? 'bg-slate-800 hover:bg-slate-750' : 'bg-slate-800/50 hover:bg-slate-750'
-                  }`}
-                  onClick={() => setSelectedEmployee(selectedEmployee === emp.name ? null : emp.name)}
-                >
-                  <td className="px-4 py-3 font-medium text-blue-400 hover:text-blue-300">{emp.name}</td>
-                  <td className="px-4 py-3 text-center text-white font-semibold">{emp.total}</td>
-                  <td className="px-4 py-3 text-center text-slate-300">{emp.avgPerMonth}</td>
-                  <td className="px-4 py-3 text-center">
-                    <span className="px-2 py-0.5 rounded-full text-xs bg-slate-700 text-slate-300">{emp.topDow}</span>
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="w-16 bg-slate-700 rounded-full h-1.5">
-                        <div
-                          className="bg-blue-500 h-1.5 rounded-full"
-                          style={{ width: `${Math.min(emp.pct * 2, 100)}%` }}
-                        />
+                <>
+                  <tr
+                    key={emp.name}
+                    className={`border-t border-slate-700 cursor-pointer transition-colors ${
+                      selectedEmployee === emp.name ? 'bg-blue-900/30' : i % 2 === 0 ? 'bg-slate-800 hover:bg-slate-750' : 'bg-slate-800/50 hover:bg-slate-750'
+                    }`}
+                    onClick={() => setSelectedEmployee(selectedEmployee === emp.name ? null : emp.name)}
+                  >
+                    <td className="px-4 py-3 font-medium">
+                      <button
+                        className="text-blue-400 hover:text-blue-200 text-left flex items-center gap-1 group"
+                        onClick={e => {
+                          e.stopPropagation();
+                          setExpandedEmployee(expandedEmployee === emp.name ? null : emp.name);
+                        }}
+                        title="Click for last 10 request-off dates"
+                      >
+                        <span className="text-slate-500 text-xs group-hover:text-blue-400 transition-transform duration-200" style={{ display: 'inline-block', transform: expandedEmployee === emp.name ? 'rotate(90deg)' : 'rotate(0deg)' }}>▶</span>
+                        {emp.name}
+                      </button>
+                    </td>
+                    <td className="px-4 py-3 text-center text-white font-semibold">{emp.total}</td>
+                    <td className="px-4 py-3 text-center text-slate-300">{emp.avgPerMonth}</td>
+                    <td className="px-4 py-3 text-center">
+                      <span className="px-2 py-0.5 rounded-full text-xs bg-slate-700 text-slate-300">{emp.topDow}</span>
+                    </td>
+                    <td className="px-4 py-3 text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="w-16 bg-slate-700 rounded-full h-1.5">
+                          <div
+                            className="bg-blue-500 h-1.5 rounded-full"
+                            style={{ width: `${Math.min(emp.pct * 2, 100)}%` }}
+                          />
+                        </div>
+                        <span className="text-slate-300 text-xs w-10">{emp.pct}%</span>
                       </div>
-                      <span className="text-slate-300 text-xs w-10">{emp.pct}%</span>
-                    </div>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
+                  {expandedEmployee === emp.name && (() => {
+                    const miniDates = getMiniProfile(emp.name);
+                    return (
+                      <tr key={`${emp.name}-mini`} className="border-t border-slate-700/50 bg-slate-900/60">
+                        <td colSpan={5} className="px-6 py-3">
+                          <div className="ml-4 bg-slate-800 rounded-xl border border-slate-700 p-4 animate-fade-in">
+                            <div className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">
+                              Last {miniDates.length} Request-Off Date{miniDates.length !== 1 ? 's' : ''}
+                            </div>
+                            {miniDates.length === 0 ? (
+                              <span className="text-slate-500 text-sm">No dates found</span>
+                            ) : (
+                              <div className="space-y-1.5">
+                                {miniDates.map((r, idx) => (
+                                  <div key={idx} className="flex items-center gap-3 text-sm">
+                                    <span className="text-white font-medium w-32 shrink-0">{formatMiniDate(r.parsedDate)}</span>
+                                    <span className="text-slate-400 text-xs w-28 shrink-0 truncate">{r.workgroup}</span>
+                                    <span className="px-2 py-0.5 rounded-full text-xs bg-blue-900/50 text-blue-300 border border-blue-800/50">{r.type}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })()}
+                </>
               ))}
             </tbody>
           </table>
