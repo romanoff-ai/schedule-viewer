@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { processData } from './utils/dataProcessing';
+import { processData, deduplicateData } from './utils/dataProcessing';
 import NavBar from './components/NavBar';
 import AnalyticsPage from './components/AnalyticsPage';
 import SchedulerPage from './components/SchedulerPage';
@@ -14,7 +14,7 @@ export default function App() {
     fetch('/schedule-data.json')
       .then(r => r.json())
       .then(data => {
-        setRawData(processData(data));
+        setRawData(processData(deduplicateData(data)));
         setLoading(false);
       });
   }, []);

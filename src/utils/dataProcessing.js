@@ -127,6 +127,58 @@ export function getDayOfWeek(dateStr) {
   return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()];
 }
 
+export function deduplicateData(rawData) {
+  const byPersonDate = {};
+  rawData.forEach(record => {
+    const key = record.name + '|' + record.date;
+    if (!byPersonDate[key]) byPersonDate[key] = [];
+    byPersonDate[key].push(record);
+  });
+
+  const deduped = [];
+  Object.values(byPersonDate).forEach(records => {
+    if (records.length === 1) {
+      deduped.push(records[0]);
+      return;
+    }
+    // Get unique schedules
+    const uniqueSchedules = [...new Set(records.map(r => r.schedule))];
+    if (uniqueSchedules.length === 1) {
+      // All same schedule — keep one (prefer Peacock Bar > Quill Room > others)
+      const priority = ['Peacock Bar', 'Quill Room', 'Goldies Mixologist'];
+      const sorted = [...records].sort((a, b) => {
+        const ai = priority.indexOf(a.workgroup);
+        const bi = priority.indexOf(b.workgroup);
+        return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+      });
+      deduped.push(sorted[0]);
+    } else {
+      // Different schedules — keep working ones, skip Off duplicates
+      const working = records.filter(r => isWorkingShift(r));
+      if (working.length > 0) {
+        // Keep unique working schedules
+        const seen = new Set();
+        working.forEach(r => {
+          if (!seen.has(r.schedule)) {
+            seen.add(r.schedule);
+            deduped.push(r);
+          }
+        });
+      } else {
+        // All off — keep just one (prefer Peacock Bar > Quill Room > others)
+        const priority = ['Peacock Bar', 'Quill Room', 'Goldies Mixologist'];
+        const sorted = [...records].sort((a, b) => {
+          const ai = priority.indexOf(a.workgroup);
+          const bi = priority.indexOf(b.workgroup);
+          return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+        });
+        deduped.push(sorted[0]);
+      }
+    }
+  });
+  return deduped;
+}
+
 export function processData(rawData) {
   return rawData.map(record => ({
     ...record,

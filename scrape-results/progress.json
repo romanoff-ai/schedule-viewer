@@ -1,5 +1,5 @@
 {
-  "completedWorkgroups": 18,
+  "completedWorkgroups": 20,
   "totalWorkgroups": 18,
   "summary": [
     {
@@ -91,7 +91,17 @@
       "workgroup": "3. Goldies Servers",
       "dept": "Goldies",
       "count": 0
+    },
+    {
+      "workgroup": "4. Goldie's Host",
+      "dept": "Goldies",
+      "count": 684
+    },
+    {
+      "workgroup": "Quill Room",
+      "dept": "Quill Room",
+      "count": 3776
     }
   ],
-  "totalRecords": 31892
+  "totalRecords": 36352
 }
