@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { getFormerEmployees } from '../utils/dataProcessing';
 
 // ---------- helpers ----------
 
@@ -29,9 +30,18 @@ export default function RequestOffsPage({ data }) {
   const [selectedYear, setSelectedYear] = useState('all');
   const [heatmapEmployee, setHeatmapEmployee] = useState('all');
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [hideFormer, setHideFormer] = useState(true);
+
+  const formerEmployees = useMemo(() => getFormerEmployees(data), [data]);
+
+  // filter out former employees if toggle is on
+  const activeData = useMemo(() => {
+    if (!hideFormer) return data;
+    return data.filter(r => !formerEmployees.has(r.name));
+  }, [data, hideFormer, formerEmployees]);
 
   // all req-off records
-  const reqOffRecords = useMemo(() => data.filter(isRequestOff), [data]);
+  const reqOffRecords = useMemo(() => activeData.filter(isRequestOff), [activeData]);
 
   // available years
   const years = useMemo(() => {
@@ -41,8 +51,9 @@ export default function RequestOffsPage({ data }) {
 
   // all employees (from full dataset)
   const allEmployees = useMemo(() => {
-    return [...new Set(data.map(r => r.name))].sort();
-  }, [data]);
+    const names = [...new Set(activeData.map(r => r.name))].sort();
+    return names;
+  }, [activeData]);
 
   // ---- Frequency table data ----
   const tableData = useMemo(() => {
@@ -161,6 +172,17 @@ export default function RequestOffsPage({ data }) {
           <p className="text-slate-400 text-sm mt-1">
             {reqOffRecords.length} total request-offs across {allEmployees.length} employees
           </p>
+          {formerEmployees.size > 0 && (
+            <label className="flex items-center gap-2 cursor-pointer text-slate-400 text-sm mt-2">
+              <input
+                type="checkbox"
+                checked={hideFormer}
+                onChange={e => setHideFormer(e.target.checked)}
+                className="rounded"
+              />
+              Hide former employees ({[...formerEmployees].join(', ')})
+            </label>
+          )}
         </div>
         <div className="bg-slate-800 rounded-xl px-4 py-2 text-center">
           <div className="text-3xl font-bold text-blue-400">{reqOffRecords.length}</div>

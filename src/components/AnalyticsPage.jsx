@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { filterData } from '../utils/dataProcessing';
+import { filterData, getFormerEmployees } from '../utils/dataProcessing';
 import Header from './Header';
 import SummaryCards from './SummaryCards';
 import PositionRotationChart from './PositionRotationChart';
@@ -20,11 +20,15 @@ export default function AnalyticsPage({ data }) {
     outlet: 'All',
   });
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [hideFormer, setHideFormer] = useState(true);
+
+  const formerEmployees = useMemo(() => getFormerEmployees(data), [data]);
 
   const allEmployees = useMemo(() => {
     if (!data) return [];
-    return [...new Set(data.map(r => r.name))].sort();
-  }, [data]);
+    const names = [...new Set(data.map(r => r.name))].sort();
+    return hideFormer ? names.filter(n => !formerEmployees.has(n)) : names;
+  }, [data, hideFormer, formerEmployees]);
 
   const filteredData = useMemo(() => {
     if (!data) return [];
@@ -34,8 +38,10 @@ export default function AnalyticsPage({ data }) {
       employees: filters.employees,
       workgroup: filters.workgroup,
       outlet: filters.outlet,
+      hideFormer,
+      formerEmployees,
     });
-  }, [data, filters]);
+  }, [data, filters, hideFormer, formerEmployees]);
 
   const handleEmployeeClick = useCallback((name) => {
     setSelectedEmployee(name);
@@ -50,6 +56,22 @@ export default function AnalyticsPage({ data }) {
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+        {formerEmployees.size > 0 && (
+          <div className="flex items-center gap-3 px-4 py-2 bg-slate-800/50 rounded-lg text-sm">
+            <label className="flex items-center gap-2 cursor-pointer text-slate-300">
+              <input
+                type="checkbox"
+                checked={hideFormer}
+                onChange={e => setHideFormer(e.target.checked)}
+                className="rounded"
+              />
+              Hide former employees
+            </label>
+            <span className="text-slate-500">
+              ({[...formerEmployees].join(', ')})
+            </span>
+          </div>
+        )}
         <SummaryCards data={filteredData} />
         <PositionRotationChart data={filteredData} onEmployeeClick={handleEmployeeClick} />
         <OutletDistribution data={filteredData} onEmployeeClick={handleEmployeeClick} />

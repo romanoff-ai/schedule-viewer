@@ -140,8 +140,27 @@ export function processData(rawData) {
   }));
 }
 
-export function filterData(data, { startDate, endDate, employees, workgroup, outlet }) {
+// Determine former employees: last record >90 days before dataset end
+export function getFormerEmployees(data) {
+  if (!data || !data.length) return new Set();
+  const empLast = {};
+  let maxDate = 0;
+  data.forEach(r => {
+    const d = parseDate(r.date).getTime();
+    if (!empLast[r.name] || d > empLast[r.name]) empLast[r.name] = d;
+    if (d > maxDate) maxDate = d;
+  });
+  const cutoff = maxDate - 90 * 24 * 60 * 60 * 1000;
+  const former = new Set();
+  Object.entries(empLast).forEach(([name, last]) => {
+    if (last < cutoff) former.add(name);
+  });
+  return former;
+}
+
+export function filterData(data, { startDate, endDate, employees, workgroup, outlet, hideFormer, formerEmployees }) {
   return data.filter(record => {
+    if (hideFormer && formerEmployees && formerEmployees.has(record.name)) return false;
     if (startDate && record.parsedDate < startDate) return false;
     if (endDate && record.parsedDate > endDate) return false;
     if (employees.length > 0 && !employees.includes(record.name)) return false;
