@@ -101,7 +101,14 @@ export function calculateHours(startTime, endTime) {
 }
 
 export function isWorkingShift(record) {
-  return record.status === 'working' && record.startTime && record.endTime;
+  const sched = (record.schedule || '').trim().toLowerCase();
+  // Not working if schedule is any off variant
+  if (!sched) return false;
+  if (/^off/i.test(sched) || /^req[.\s]*off/i.test(sched) || /^rto$/i.test(sched) || sched === 'off') return false;
+  if (sched.startsWith('offpsnl') || sched.startsWith('offvac')) return false;
+  if (sched === 'req off' || sched === 'req. off' || sched === 'req off' || sched === 'r/off') return false;
+  // Working if schedule contains a time range pattern like "4:00 P - 1:00 A"
+  return /\d+:\d+\s*[AP]/.test(record.schedule);
 }
 
 export function isWeekend(dateStr) {
