@@ -68,7 +68,23 @@ export const POSITION_COLORS = {
 
 export const ALL_POSITIONS = Object.keys(POSITION_COLORS);
 
+function normalizeDate(dateStr) {
+  if (!dateStr) return dateStr;
+  // If YYYY-MM-DD format, convert to MM/DD/YYYY
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    const [y, m, d] = dateStr.split('-');
+    return `${m}/${d}/${y}`;
+  }
+  return dateStr;
+}
+
 export function parseDate(dateStr) {
+  if (!dateStr) return new Date(NaN);
+  // Handle YYYY-MM-DD format directly
+  if (/^\d{4}-\d{2}-\d{2}/.test(dateStr)) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  }
   const [m, d, y] = dateStr.split('/').map(Number);
   return new Date(y, m - 1, d);
 }
@@ -118,7 +134,9 @@ export function isWeekend(dateStr) {
 }
 
 export function getMonthKey(dateStr) {
-  const [m, , y] = dateStr.split('/');
+  const normalized = normalizeDate(dateStr);
+  if (!normalized) return 'unknown';
+  const [m, , y] = normalized.split('/');
   return `${y}-${m.padStart(2, '0')}`;
 }
 
@@ -180,17 +198,21 @@ export function deduplicateData(rawData) {
 }
 
 export function processData(rawData) {
-  return rawData.map(record => ({
-    ...record,
-    workgroup: cleanWorkgroupName(record.workgroup),
-    cleanPosition: cleanPosition(record.position),
-    outlet: detectOutlet(record.position),
-    hours: calculateHours(record.startTime, record.endTime),
-    parsedDate: parseDate(record.date),
-    isWorking: isWorkingShift(record),
-    dayOfWeek: getDayOfWeek(record.date),
-    monthKey: getMonthKey(record.date),
-  }));
+  return rawData.map(record => {
+    const normalizedDate = normalizeDate(record.date);
+    return {
+      ...record,
+      date: normalizedDate,
+      workgroup: cleanWorkgroupName(record.workgroup),
+      cleanPosition: cleanPosition(record.position),
+      outlet: detectOutlet(record.position),
+      hours: calculateHours(record.startTime, record.endTime),
+      parsedDate: parseDate(normalizedDate),
+      isWorking: isWorkingShift(record),
+      dayOfWeek: getDayOfWeek(normalizedDate),
+      monthKey: getMonthKey(normalizedDate),
+    };
+  });
 }
 
 // Determine former employees: last record >90 days before dataset end

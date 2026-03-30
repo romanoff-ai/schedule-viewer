@@ -15,6 +15,11 @@ const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 function parseDate(dateStr) {
   if (!dateStr) return new Date(NaN);
+  // Handle YYYY-MM-DD format
+  if (/^\d{4}-\d{2}-\d{2}/.test(dateStr)) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  }
   const parts = dateStr.split('/');
   if (parts.length !== 3) return new Date(NaN);
   const [m, d, y] = parts.map(Number);
