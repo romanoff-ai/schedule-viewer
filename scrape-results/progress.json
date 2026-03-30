@@ -1,0 +1,97 @@
+{
+  "completedWorkgroups": 18,
+  "totalWorkgroups": 18,
+  "summary": [
+    {
+      "workgroup": "1. Peacock Mgmt",
+      "dept": "The Peacock",
+      "count": 504
+    },
+    {
+      "workgroup": "2. Peacock Hosts",
+      "dept": "The Peacock",
+      "count": 2585
+    },
+    {
+      "workgroup": "4. Peacock Servers",
+      "dept": "The Peacock",
+      "count": 8496
+    },
+    {
+      "workgroup": "5. Peacock Bussers",
+      "dept": "The Peacock",
+      "count": 4235
+    },
+    {
+      "workgroup": "6. Peacock Runners",
+      "dept": "The Peacock",
+      "count": 2129
+    },
+    {
+      "workgroup": "Peacock Barista",
+      "dept": "The Peacock",
+      "count": 0
+    },
+    {
+      "workgroup": "Peacock Bar",
+      "dept": "The Peacock Lounge",
+      "count": 5917
+    },
+    {
+      "workgroup": "Peacock Barback",
+      "dept": "The Peacock Lounge",
+      "count": 2106
+    },
+    {
+      "workgroup": "Peacock Lounge Manager",
+      "dept": "The Peacock Lounge",
+      "count": 0
+    },
+    {
+      "workgroup": "1. Banquet Captains",
+      "dept": "Banquet",
+      "count": 83
+    },
+    {
+      "workgroup": "2. Banquet Servers",
+      "dept": "Banquet",
+      "count": 159
+    },
+    {
+      "workgroup": "3. Banquet Housepersons",
+      "dept": "Banquet",
+      "count": 0
+    },
+    {
+      "workgroup": "4. Banquet Bartenders",
+      "dept": "Banquet",
+      "count": 1631
+    },
+    {
+      "workgroup": "1. Goldies Mixologist",
+      "dept": "Goldies",
+      "count": 1715
+    },
+    {
+      "workgroup": "2. Goldies Runner",
+      "dept": "Goldies",
+      "count": 308
+    },
+    {
+      "workgroup": "3. Goldies Servers",
+      "dept": "Goldies",
+      "count": 0
+    },
+    {
+      "workgroup": "4. Goldies Host",
+      "dept": "Goldies",
+      "count": 687
+    },
+    {
+      "workgroup": "Quill Room",
+      "dept": "Quill Room",
+      "count": 3776
+    }
+  ],
+  "totalRecords": 34331
+}
