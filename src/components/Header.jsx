@@ -248,25 +248,23 @@ export default function Header({ allEmployees, allWorkgroups, filters, onFilterC
               )}
             </div>
 
-            {/* Workgroup — horizontally scrollable pill bar */}
+            {/* Workgroup — wrapping pill bar */}
             <div className="flex-1 min-w-0">
               <label className="block text-xs text-slate-400 mb-1">Workgroup</label>
-              <div className="overflow-x-auto scrollbar-hide">
-                <div className="flex gap-1 min-w-max">
-                  {workgroupOptions.map(opt => (
-                    <button
-                      key={opt}
-                      onClick={() => onFilterChange({ ...filters, workgroup: opt })}
-                      className={`px-3 py-1.5 text-sm rounded-full whitespace-nowrap transition-colors border ${
-                        (filters.workgroup || 'All') === opt
-                          ? 'bg-blue-600 border-blue-500 text-white'
-                          : 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white'
-                      }`}
-                    >
-                      {opt}
-                    </button>
-                  ))}
-                </div>
+              <div className="flex flex-wrap gap-2">
+                {workgroupOptions.map(opt => (
+                  <button
+                    key={opt}
+                    onClick={() => onFilterChange({ ...filters, workgroup: opt })}
+                    className={`px-3 py-1.5 text-sm rounded-full whitespace-nowrap transition-colors border ${
+                      (filters.workgroup || 'All') === opt
+                        ? 'bg-blue-600 border-blue-500 text-white'
+                        : 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white'
+                    }`}
+                  >
+                    {opt}
+                  </button>
+                ))}
               </div>
             </div>
           </div>

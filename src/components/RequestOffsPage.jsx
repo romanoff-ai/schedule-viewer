@@ -57,13 +57,22 @@ export default function RequestOffsPage({ data }) {
     return names;
   }, [activeData]);
 
+  // unique person+date combos across all req-off records
+  const totalUniqueReqOffs = useMemo(() => {
+    const seen = new Set();
+    reqOffRecords.forEach(r => seen.add(`${r.name}|${r.date}`));
+    return seen.size;
+  }, [reqOffRecords]);
+
   // ---- Frequency table data ----
   const tableData = useMemo(() => {
     const employees = [...new Set(data.map(r => r.name))];
     return employees.map(name => {
       const empAll = data.filter(r => r.name === name);
       const empReqOff = reqOffRecords.filter(r => r.name === name);
-      const total = empReqOff.length;
+      // count unique dates (same person same day = 1 request off)
+      const uniqueDates = new Set(empReqOff.map(r => r.date));
+      const total = uniqueDates.size;
       const totalShifts = empAll.length;
       const pct = totalShifts > 0 ? ((total / totalShifts) * 100).toFixed(1) : '0.0';
 
@@ -106,14 +115,21 @@ export default function RequestOffsPage({ data }) {
     if (selectedYear !== 'all') records = records.filter(r => parseDate(r.date).getFullYear() === parseInt(selectedYear));
     if (heatmapEmployee !== 'all') records = records.filter(r => r.name === heatmapEmployee);
 
-    // Build [month][day] = count
-    const grid = {};
+    // Build [month][day] = unique employee count (same person same day = 1)
+    const byCell = {};
     records.forEach(r => {
       const d = parseDate(r.date);
       const m = d.getMonth();      // 0-11
       const day = d.getDate();     // 1-31
+      const cellKey = `${m}-${day}`;
+      if (!byCell[cellKey]) byCell[cellKey] = new Set();
+      byCell[cellKey].add(r.name);
+    });
+    const grid = {};
+    Object.entries(byCell).forEach(([key, nameSet]) => {
+      const [m, day] = key.split('-').map(Number);
       if (!grid[m]) grid[m] = {};
-      grid[m][day] = (grid[m][day] || 0) + 1;
+      grid[m][day] = nameSet.size;
     });
     return grid;
   }, [reqOffRecords, selectedYear, heatmapEmployee]);
@@ -183,7 +199,7 @@ export default function RequestOffsPage({ data }) {
         <div>
           <h1 className="text-2xl font-bold text-white">Request Offs</h1>
           <p className="text-slate-400 text-sm mt-1">
-            {reqOffRecords.length} total request-offs across {allEmployees.length} employees
+            {totalUniqueReqOffs} total request-offs across {allEmployees.length} employees
           </p>
           {formerEmployees.size > 0 && (
             <label className="flex items-center gap-2 cursor-pointer text-slate-400 text-sm mt-2">
@@ -198,7 +214,7 @@ export default function RequestOffsPage({ data }) {
           )}
         </div>
         <div className="bg-slate-800 rounded-xl px-4 py-2 text-center">
-          <div className="text-3xl font-bold text-blue-400">{reqOffRecords.length}</div>
+          <div className="text-3xl font-bold text-blue-400">{totalUniqueReqOffs}</div>
           <div className="text-xs text-slate-400">All-Time Req. Offs</div>
         </div>
       </div>
@@ -475,7 +491,7 @@ export default function RequestOffsPage({ data }) {
                 className="bg-slate-900 border border-slate-600 rounded-xl shadow-2xl p-3 pointer-events-none"
               >
                 <div className="text-white font-semibold text-sm mb-1">{dateLabel}</div>
-                <div className="text-blue-400 text-xs mb-2">{hoveredRecords.length} request{hoveredRecords.length !== 1 ? 's' : ''} off</div>
+                <div className="text-blue-400 text-xs mb-2">{new Set(hoveredRecords.map(r => r.name)).size} employee{new Set(hoveredRecords.map(r => r.name)).size !== 1 ? 's' : ''} off{hoveredRecords.length > new Set(hoveredRecords.map(r => r.name)).size ? ` (${hoveredRecords.length} records)` : ''}</div>
                 <div className="space-y-1.5 max-h-48 overflow-y-auto">
                   {hoveredRecords.map((r, i) => (
                     <div key={i} className="flex flex-col bg-slate-800 rounded-lg px-2 py-1.5">

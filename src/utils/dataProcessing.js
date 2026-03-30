@@ -232,7 +232,7 @@ export function cleanWorkgroupName(wg) {
 export function getUniqueWorkgroups(data) {
   if (!data || !data.length) return [];
   const wgs = new Set();
-  data.forEach(r => { if (r.workgroup) wgs.add(r.workgroup); });
+  data.forEach(r => { if (r.workgroup) wgs.add(cleanWorkgroupName(r.workgroup)); });
   return [...wgs].sort();
 }
 
