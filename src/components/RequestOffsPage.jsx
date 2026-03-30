@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 
 // ---------- helpers ----------
 
-const REQ_OFF_PATTERNS = ['req. off', 'req off', 'rto', 'r/off'];
+const REQ_OFF_PATTERNS = ['req. off', 'req off', 'rto', 'r/off', 'offpsnl', 'offvac', 'req off'];
 
 export function isRequestOff(record) {
   const s = (record.schedule || '').trim().toLowerCase();
