@@ -146,6 +146,21 @@ export function getDayOfWeek(dateStr) {
 }
 
 export function deduplicateData(rawData) {
+  // Priority uses raw (uncleaned) workgroup names since processData hasn't run yet
+  // cleanWorkgroupName strips leading "N. " prefixes, so we match raw names broadly
+  function workgroupPriority(wg) {
+    const clean = cleanWorkgroupName(wg || '');
+    if (clean === 'Peacock Bar') return 0;
+    if (clean === 'Quill Room') return 1;
+    if (clean === 'Goldies Mixologist') return 2;
+    return 99;
+  }
+
+  function prioritySort(records) {
+    return [...records].sort((a, b) => workgroupPriority(a.workgroup) - workgroupPriority(b.workgroup));
+  }
+
+  // Group by person + date
   const byPersonDate = {};
   rawData.forEach(record => {
     const key = record.name + '|' + record.date;
@@ -159,41 +174,27 @@ export function deduplicateData(rawData) {
       deduped.push(records[0]);
       return;
     }
-    // Get unique schedules
-    const uniqueSchedules = [...new Set(records.map(r => r.schedule))];
-    if (uniqueSchedules.length === 1) {
-      // All same schedule — keep one (prefer Peacock Bar > Quill Room > others)
-      const priority = ['Peacock Bar', 'Quill Room', 'Goldies Mixologist'];
-      const sorted = [...records].sort((a, b) => {
-        const ai = priority.indexOf(a.workgroup);
-        const bi = priority.indexOf(b.workgroup);
-        return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
-      });
-      deduped.push(sorted[0]);
+
+    // Group by schedule text — same schedule across any workgroup = duplicate
+    const bySchedule = {};
+    records.forEach(r => {
+      const sched = (r.schedule || '').trim();
+      if (!bySchedule[sched]) bySchedule[sched] = [];
+      bySchedule[sched].push(r);
+    });
+
+    // For each unique schedule text, keep only the best one (priority order)
+    const uniqueBySchedule = Object.values(bySchedule).map(group => prioritySort(group)[0]);
+
+    // From the unique-schedule records, keep working shifts; if all off, keep one
+    const working = uniqueBySchedule.filter(r => isWorkingShift(r));
+    if (working.length > 0) {
+      working.forEach(r => deduped.push(r));
     } else {
-      // Different schedules — keep working ones, skip Off duplicates
-      const working = records.filter(r => isWorkingShift(r));
-      if (working.length > 0) {
-        // Keep unique working schedules
-        const seen = new Set();
-        working.forEach(r => {
-          if (!seen.has(r.schedule)) {
-            seen.add(r.schedule);
-            deduped.push(r);
-          }
-        });
-      } else {
-        // All off — keep just one (prefer Peacock Bar > Quill Room > others)
-        const priority = ['Peacock Bar', 'Quill Room', 'Goldies Mixologist'];
-        const sorted = [...records].sort((a, b) => {
-          const ai = priority.indexOf(a.workgroup);
-          const bi = priority.indexOf(b.workgroup);
-          return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
-        });
-        deduped.push(sorted[0]);
-      }
+      deduped.push(prioritySort(uniqueBySchedule)[0]);
     }
   });
+
   return deduped;
 }
 
@@ -233,13 +234,28 @@ export function getFormerEmployees(data) {
   return former;
 }
 
+// Outlet families: outlets that belong to the same workgroup family
+// Peacock Bar workgroup covers both "Peacock" and "Peacock Patio" outlets
+const WORKGROUP_OUTLET_FAMILIES = {
+  'Peacock Bar': ['Peacock', 'Peacock Patio'],
+};
+
+export function outletMatchesWorkgroup(outlet, workgroup) {
+  const family = WORKGROUP_OUTLET_FAMILIES[workgroup];
+  if (family) return family.includes(outlet);
+  return true; // no restriction for other workgroups
+}
+
 export function filterData(data, { startDate, endDate, employees, workgroup, outlet, hideFormer, formerEmployees }) {
   return data.filter(record => {
     if (hideFormer && formerEmployees && formerEmployees.has(record.name)) return false;
     if (startDate && record.parsedDate < startDate) return false;
     if (endDate && record.parsedDate > endDate) return false;
     if (employees.length > 0 && !employees.includes(record.name)) return false;
-    if (workgroup && workgroup !== 'All' && record.workgroup !== workgroup) return false;
+    if (workgroup && workgroup !== 'All') {
+      // Strict workgroup match
+      if (record.workgroup !== workgroup) return false;
+    }
     if (outlet && outlet !== 'All' && record.outlet !== outlet) return false;
     return true;
   });

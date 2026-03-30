@@ -404,7 +404,7 @@ export default function FairnessScore({ data, onEmployeeClick }) {
                           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 text-xs text-slate-300">
                             <div><span className="text-slate-500">Total Shifts:</span> {row.totalShifts}</div>
                             <div><span className="text-slate-500">Weekend %:</span> {row.weekendPct}%</div>
-                            <div><span className="text-slate-500">Positions ({row.posVariety}):</span> {row.positions || 'None'}</div>
+                            <div><span className="text-slate-500">{row.posVariety === 1 ? 'Position' : 'Positions'} ({row.posVariety}):</span> {row.positions || 'None'}</div>
                             <div><span className="text-slate-500">Closing %:</span> {row.closingPct}%</div>
                             <div><span className="text-slate-500">Holidays Worked:</span> {row.holidayCount}</div>
                             <div><span className="text-slate-500">Total Hours:</span> {row.totalHoursVal}h</div>
