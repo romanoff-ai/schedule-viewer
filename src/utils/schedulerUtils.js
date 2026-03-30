@@ -112,6 +112,8 @@ export function buildDefaultPreferences(historyAnalysis) {
         return acc;
       }, {}),
       trainedOutlets: analysis.trainedOutlets || ['Peacock'],
+      // shiftTimePrefs: { Mon: 'Either', Tue: 'PM', ... } — per-day AM/PM/Either preference
+      shiftTimePrefs: DAYS.reduce((acc, day) => { acc[day] = 'Either'; return acc; }, {}),
     };
   }
   return prefs;
@@ -232,12 +234,14 @@ export function generateSchedule(template, preferences, historicalData, weekStar
       }
 
       if (bestEmployee) {
+        const empShiftPref = (preferences[bestEmployee].shiftTimePrefs || {})[day] || 'Either';
         dayAssignments.push({
           employee: bestEmployee,
           position,
           day,
           date: dateStr,
-          time: getDefaultShiftTime(position, day),
+          time: getDefaultShiftTime(position, day, empShiftPref),
+          shiftTimePref: empShiftPref,
         });
         assignedToday.add(bestEmployee);
         employeeWeekShifts[bestEmployee]++;
@@ -283,6 +287,12 @@ function scoreAssignment(name, position, day, pref, currentWeekShifts, lastPosit
   else if (prefIdx === 2) score += 40;
   else score += 10; // Can still work it, just not preferred
 
+  // Shift time preference — bar industry is PM-dominant; AM pref is a mild mismatch
+  const shiftPref = (pref.shiftTimePrefs || {})[day] || 'Either';
+  if (shiftPref === 'PM') score += 15;       // Great fit for bar shifts
+  else if (shiftPref === 'AM') score -= 10;  // Slight penalty — they prefer morning
+  // 'Either' = no adjustment
+
   // Rotation fairness — days since last working this position
   const key = `${name}|${position}`;
   const lastDate = lastPositionMap[key];
@@ -312,11 +322,22 @@ function hashString(str) {
   return Math.abs(hash);
 }
 
-function getDefaultShiftTime(position, day) {
+function getDefaultShiftTime(position, day, shiftTimePref = 'Either') {
   const isWeekend = ['Fri', 'Sat'].includes(day);
-  if (position === 'Kappo' || position === 'Goldies' || position === 'Quill') {
-    return isWeekend ? '5:00 P - 1:00 A' : '5:00 P - 12:00 A';
+  const isOutlet = position === 'Kappo' || position === 'Goldies' || position === 'Quill';
+
+  if (shiftTimePref === 'AM') {
+    // Morning/day shift times
+    if (isOutlet) return isWeekend ? '11:00 A - 5:00 P' : '11:00 A - 5:00 P';
+    return isWeekend ? '11:00 A - 7:00 P' : '11:00 A - 6:00 P';
   }
+  if (shiftTimePref === 'PM') {
+    // Evening/night shift times (same as default — these are all PM positions)
+    if (isOutlet) return isWeekend ? '5:00 P - 1:00 A' : '5:00 P - 12:00 A';
+    return isWeekend ? '4:00 P - 2:00 A' : '4:00 P - 12:00 A';
+  }
+  // Either — use default PM times (bar industry)
+  if (isOutlet) return isWeekend ? '5:00 P - 1:00 A' : '5:00 P - 12:00 A';
   return isWeekend ? '4:00 P - 2:00 A' : '4:00 P - 12:00 A';
 }
 
