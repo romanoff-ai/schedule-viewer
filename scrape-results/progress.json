@@ -1,5 +1,5 @@
 {
-  "completedWorkgroups": 17,
+  "completedWorkgroups": 18,
   "totalWorkgroups": 18,
   "summary": [
     {
@@ -86,6 +86,11 @@
       "workgroup": "2. Goldies Runner",
       "dept": "Goldies",
       "count": 308
+    },
+    {
+      "workgroup": "3. Goldies Servers",
+      "dept": "Goldies",
+      "count": 0
     }
   ],
   "totalRecords": 31892

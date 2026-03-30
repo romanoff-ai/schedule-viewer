@@ -29,21 +29,31 @@ export default function PositionRotationChart({ data, onEmployeeClick }) {
     return ALL_POSITIONS.filter(p => seen.has(p));
   }, [chartData]);
 
+  // Calculate dynamic height: at least 300px, ~36px per employee row
+  const chartHeight = Math.max(300, chartData.length * 36 + 60);
+
   return (
     <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 sm:p-6">
       <h2 className="text-lg font-semibold text-white mb-4">Position Rotation by Employee</h2>
-      <ResponsiveContainer width="100%" height={400}>
-        <BarChart data={chartData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+      <ResponsiveContainer width="100%" height={chartHeight}>
+        <BarChart
+          data={chartData}
+          layout="vertical"
+          margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" stroke="#334155" horizontal={false} />
           <XAxis
-            dataKey="name"
+            type="number"
             tick={{ fill: '#94a3b8', fontSize: 12 }}
-            angle={-45}
-            textAnchor="end"
-            height={80}
-            interval={0}
+            allowDecimals={false}
           />
-          <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} />
+          <YAxis
+            type="category"
+            dataKey="name"
+            width={90}
+            tick={{ fill: '#94a3b8', fontSize: 13 }}
+            tickLine={false}
+          />
           <Tooltip
             contentStyle={{ background: '#1e293b', border: '1px solid #475569', borderRadius: 8 }}
             labelStyle={{ color: '#f1f5f9' }}
