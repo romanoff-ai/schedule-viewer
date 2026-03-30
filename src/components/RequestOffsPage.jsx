@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useCallback } from 'react';
 import { getFormerEmployees } from '../utils/dataProcessing';
 
 // ---------- helpers ----------
@@ -31,6 +31,8 @@ export default function RequestOffsPage({ data }) {
   const [heatmapEmployee, setHeatmapEmployee] = useState('all');
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [hideFormer, setHideFormer] = useState(true);
+  const [hoveredCell, setHoveredCell] = useState(null); // { monthIdx, day, x, y, rect }
+  const heatmapRef = useRef(null);
 
   const formerEmployees = useMemo(() => getFormerEmployees(data), [data]);
 
@@ -122,13 +124,24 @@ export default function RequestOffsPage({ data }) {
     return max || 1;
   }, [heatmapData]);
 
+  // Full records for the hovered cell (for tooltip)
+  const hoveredRecords = useMemo(() => {
+    if (!hoveredCell) return [];
+    let records = reqOffRecords;
+    if (selectedYear !== 'all') records = records.filter(r => parseDate(r.date).getFullYear() === parseInt(selectedYear));
+    if (heatmapEmployee !== 'all') records = records.filter(r => r.name === heatmapEmployee);
+    return records.filter(r => {
+      const d = parseDate(r.date);
+      return d.getMonth() === hoveredCell.monthIdx && d.getDate() === hoveredCell.day;
+    });
+  }, [hoveredCell, reqOffRecords, selectedYear, heatmapEmployee]);
+
   function heatColor(count) {
     if (!count) return 'bg-slate-800 text-slate-700';
-    const intensity = count / heatmapMax;
-    if (intensity < 0.2) return 'bg-blue-950 text-blue-300';
-    if (intensity < 0.4) return 'bg-blue-800 text-blue-200';
-    if (intensity < 0.6) return 'bg-blue-600 text-white';
-    if (intensity < 0.8) return 'bg-blue-500 text-white';
+    if (count === 1) return 'bg-blue-950 text-blue-300';
+    if (count === 2) return 'bg-blue-800 text-blue-200';
+    if (count === 3) return 'bg-blue-600 text-white';
+    if (count === 4) return 'bg-blue-500 text-white';
     return 'bg-blue-400 text-slate-900 font-bold';
   }
 
@@ -350,26 +363,31 @@ export default function RequestOffsPage({ data }) {
           </div>
         </div>
 
-        <div className="p-4 overflow-x-auto">
+        <div className="p-4 overflow-x-auto relative" ref={heatmapRef} onClick={e => {
+          // dismiss popup when clicking outside a cell
+          if (e.target === heatmapRef.current || e.target.closest('[data-heatcell]') === null) {
+            setHoveredCell(null);
+          }
+        }}>
           {/* Legend */}
           <div className="flex items-center gap-2 mb-4 text-xs text-slate-400">
             <span>Low</span>
             <div className="flex gap-0.5">
-              {[0, 0.15, 0.35, 0.55, 0.75, 1.0].map(v => (
+              {[0, 1, 2, 3, 4, 5].map(v => (
                 <div
                   key={v}
                   className={`w-5 h-4 rounded-sm ${
                     v === 0 ? 'bg-slate-800 border border-slate-700' :
-                    v < 0.2 ? 'bg-blue-950' :
-                    v < 0.4 ? 'bg-blue-800' :
-                    v < 0.6 ? 'bg-blue-600' :
-                    v < 0.8 ? 'bg-blue-500' : 'bg-blue-400'
+                    v === 1 ? 'bg-blue-950' :
+                    v === 2 ? 'bg-blue-800' :
+                    v === 3 ? 'bg-blue-600' :
+                    v === 4 ? 'bg-blue-500' : 'bg-blue-400'
                   }`}
                 />
               ))}
             </div>
             <span>High</span>
-            {heatmapMax > 1 && <span className="ml-2 text-slate-500">(max: {heatmapMax} employees)</span>}
+            {heatmapMax > 0 && <span className="ml-2 text-slate-500">(max: {heatmapMax} employees)</span>}
           </div>
 
           <div className="min-w-max">
@@ -392,11 +410,30 @@ export default function RequestOffsPage({ data }) {
                     return <div key={m} className="w-9 h-6 mx-0.5" />;
                   }
                   const count = (heatmapData[mi] || {})[day] || 0;
+                  const isHovered = hoveredCell && hoveredCell.monthIdx === mi && hoveredCell.day === day;
                   return (
                     <div
                       key={m}
-                      title={count ? `${MONTHS[mi]} ${day}: ${count} req. off` : ''}
-                      className={`w-8 h-6 mx-0.5 rounded-sm text-xs flex items-center justify-center cursor-default transition-all ${heatColor(count)}`}
+                      data-heatcell="1"
+                      onMouseEnter={count > 0 ? (e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const containerRect = heatmapRef.current.getBoundingClientRect();
+                        setHoveredCell({ monthIdx: mi, day, cellRect: rect, containerRect });
+                      } : undefined}
+                      onMouseLeave={count > 0 ? () => setHoveredCell(null) : undefined}
+                      onClick={count > 0 ? (e) => {
+                        e.stopPropagation();
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const containerRect = heatmapRef.current.getBoundingClientRect();
+                        setHoveredCell(prev =>
+                          prev && prev.monthIdx === mi && prev.day === day
+                            ? null
+                            : { monthIdx: mi, day, cellRect: rect, containerRect }
+                        );
+                      } : undefined}
+                      className={`w-8 h-6 mx-0.5 rounded-sm text-xs flex items-center justify-center transition-all select-none ${
+                        count > 0 ? 'cursor-pointer' : 'cursor-default'
+                      } ${isHovered ? 'ring-1 ring-white ring-offset-1 ring-offset-slate-900 scale-110 z-10' : ''} ${heatColor(count)}`}
                     >
                       {count > 0 ? count : ''}
                     </div>
@@ -405,6 +442,54 @@ export default function RequestOffsPage({ data }) {
               </div>
             ))}
           </div>
+
+          {/* Rich tooltip popup */}
+          {hoveredCell && hoveredRecords.length > 0 && (() => {
+            const { cellRect, containerRect } = hoveredCell;
+            // Position relative to container
+            const cellLeft = cellRect.left - containerRect.left;
+            const cellTop = cellRect.top - containerRect.top;
+
+            // Try to place to the right; flip left if near right edge
+            const popupWidth = 260;
+            const popupLeft = cellLeft + cellRect.width + 6 + containerRect.scrollLeft;
+            const flipLeft = cellLeft + popupWidth + cellRect.width + 6 > containerRect.width;
+            const left = flipLeft
+              ? Math.max(0, cellLeft - popupWidth - 4)
+              : popupLeft;
+
+            const top = Math.max(0, cellTop - 8);
+
+            const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            const dateLabel = (() => {
+              const year = selectedYear !== 'all'
+                ? parseInt(selectedYear)
+                : parseDate(hoveredRecords[0].date).getFullYear();
+              return `${monthNames[hoveredCell.monthIdx]} ${hoveredCell.day}, ${year}`;
+            })();
+
+            return (
+              <div
+                data-heatcell="1"
+                style={{ position: 'absolute', left, top, width: popupWidth, zIndex: 50 }}
+                className="bg-slate-900 border border-slate-600 rounded-xl shadow-2xl p-3 pointer-events-none"
+              >
+                <div className="text-white font-semibold text-sm mb-1">{dateLabel}</div>
+                <div className="text-blue-400 text-xs mb-2">{hoveredRecords.length} request{hoveredRecords.length !== 1 ? 's' : ''} off</div>
+                <div className="space-y-1.5 max-h-48 overflow-y-auto">
+                  {hoveredRecords.map((r, i) => (
+                    <div key={i} className="flex flex-col bg-slate-800 rounded-lg px-2 py-1.5">
+                      <span className="text-white text-xs font-medium">{r.name}</span>
+                      <div className="flex items-center justify-between mt-0.5">
+                        <span className="text-slate-400 text-xs truncate max-w-[120px]">{r.outlet || r.workgroup || '—'}</span>
+                        <span className="text-blue-300 text-xs font-mono ml-1 shrink-0">{(r.schedule || '').split('\n')[0]}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </div>
 

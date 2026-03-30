@@ -5,9 +5,9 @@ const OUTLET_RULES = [
   { patterns: ['GOLDIES', "GOLDIE'S", 'GOLDIE&#39;S', "Goldie's"], outlet: 'Goldies' },
   { patterns: ['QUILL', 'Quill Room'], outlet: 'Quill' },
   { patterns: ['BNQT', 'BANQUET', 'BQT'], outlet: 'Banquet' },
-  { patterns: ['PATIO BAR'], outlet: 'Peacock (Patio)' },
-  // Mixologist without explicit venue → Quill/Goldies (can't distinguish — mark as Lounge)
-  { patterns: ['Mixologist'], outlet: 'Quill/Goldies' },
+  { patterns: ['PATIO BAR'], outlet: 'Peacock Patio' },
+  // Mixologist without explicit venue — default to Quill
+  { patterns: ['Mixologist'], outlet: 'Quill' },
 ];
 
 // Position cleaning rules
@@ -182,6 +182,7 @@ export function deduplicateData(rawData) {
 export function processData(rawData) {
   return rawData.map(record => ({
     ...record,
+    workgroup: cleanWorkgroupName(record.workgroup),
     cleanPosition: cleanPosition(record.position),
     outlet: detectOutlet(record.position),
     hours: calculateHours(record.startTime, record.endTime),
@@ -222,6 +223,12 @@ export function filterData(data, { startDate, endDate, employees, workgroup, out
   });
 }
 
+export function cleanWorkgroupName(wg) {
+  if (!wg) return wg;
+  // Strip leading numbers + dots: "1. Peacock Mgmt" → "Peacock Mgmt"
+  return wg.replace(/^\d+\.\s*/, '').trim();
+}
+
 export function getUniqueWorkgroups(data) {
   if (!data || !data.length) return [];
   const wgs = new Set();
@@ -229,14 +236,13 @@ export function getUniqueWorkgroups(data) {
   return [...wgs].sort();
 }
 
-export const ALL_OUTLETS = ['All', 'Peacock', 'Kappo Kappo', 'Goldies', 'Quill', 'Quill/Goldies', 'Peacock (Patio)', 'Banquet'];
+export const ALL_OUTLETS = ['All', 'Peacock', 'Kappo Kappo', 'Goldies', 'Quill', 'Peacock Patio', 'Banquet'];
 
 export const OUTLET_COLORS = {
   'Peacock': '#3b82f6',
   'Kappo Kappo': '#ef4444',
   'Goldies': '#eab308',
   'Quill': '#06b6d4',
-  'Quill/Goldies': '#14b8a6',
-  'Peacock (Patio)': '#a855f7',
+  'Peacock Patio': '#a855f7',
   'Banquet': '#8b5cf6',
 };
