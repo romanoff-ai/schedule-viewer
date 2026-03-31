@@ -4,7 +4,7 @@ import { DAYS, SCHEDULABLE_POSITIONS, OUTLETS } from '../utils/schedulerUtils';
 
 const SHIFT_OPTIONS = ['AM', 'PM', 'Either'];
 
-export default function EmployeePreferences({ preferences, onChange }) {
+export default function EmployeePreferences({ preferences, onChange, rankings = {} }) {
   const [expanded, setExpanded] = useState(null);
 
   const allNames = Object.keys(preferences).sort();
@@ -113,6 +113,38 @@ export default function EmployeePreferences({ preferences, onChange }) {
 
         {isOpen && (
           <div className="px-4 pb-4 space-y-4 border-t border-slate-700">
+            {/* Manager Rankings Summary */}
+            {(() => {
+              const empRankings = [];
+              for (const [pos, list] of Object.entries(rankings)) {
+                const idx = (list || []).indexOf(name);
+                if (idx >= 0) empRankings.push({ pos, rank: idx + 1 });
+              }
+              empRankings.sort((a, b) => a.rank - b.rank);
+              if (empRankings.length > 0) {
+                return (
+                  <div className="pt-3">
+                    <label className="text-sm text-slate-400 block mb-2">Manager Rankings</label>
+                    <div className="flex flex-wrap gap-1">
+                      {empRankings.map(({ pos, rank }) => (
+                        <span
+                          key={pos}
+                          className={`text-xs px-2 py-1 rounded border ${
+                            rank === 1 ? 'bg-yellow-900/40 text-yellow-400 border-yellow-700' :
+                            rank === 2 ? 'bg-slate-600/40 text-slate-300 border-slate-500' :
+                            rank === 3 ? 'bg-amber-900/40 text-amber-600 border-amber-800' :
+                            'bg-slate-800 text-slate-400 border-slate-700'
+                          }`}
+                        >
+                          #{rank} {pos}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+              return null;
+            })()}
             {/* Preferred Positions */}
             <div className="pt-3">
               <label className="text-sm text-slate-400 block mb-2">Preferred Positions (drag to rank)</label>

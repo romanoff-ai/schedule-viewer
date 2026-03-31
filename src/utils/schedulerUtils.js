@@ -166,7 +166,7 @@ export function buildDefaultTemplate(data) {
 
 // --- Auto-Schedule Generator ---
 
-export function generateSchedule(template, preferences, historicalData, weekStartDate) {
+export function generateSchedule(template, preferences, historicalData, weekStartDate, rankings = {}) {
   const schedule = {};
   const employeeWeekShifts = {};
   const employeeLastPosition = {};
@@ -224,7 +224,7 @@ export function generateSchedule(template, preferences, historicalData, weekStar
 
         const score = scoreAssignment(
           name, position, day, preferences[name],
-          employeeWeekShifts[name], employeeLastPosition, weekStartDate
+          employeeWeekShifts[name], employeeLastPosition, weekStartDate, rankings
         );
 
         if (score > bestScore) {
@@ -277,10 +277,19 @@ function canAssign(name, position, day, preferences, assignedToday, weekShifts) 
   return true;
 }
 
-function scoreAssignment(name, position, day, pref, currentWeekShifts, lastPositionMap, weekStartDate) {
+function scoreAssignment(name, position, day, pref, currentWeekShifts, lastPositionMap, weekStartDate, rankings = {}) {
   let score = 0;
 
-  // Position preference (highest weight)
+  // Manager rankings (HIGHEST weight — dominates scheduling)
+  const positionRanking = rankings[position] || [];
+  const rankIdx = positionRanking.indexOf(name);
+  if (rankIdx >= 0) {
+    // Rank 1 = +200, Rank 2 = +170, Rank 3 = +140, etc. (decreasing by 30 per rank)
+    score += Math.max(200 - rankIdx * 30, 10);
+  }
+  // Unranked = +0 (neutral, falls back to other factors)
+
+  // Position preference (secondary weight)
   const prefIdx = pref.preferredPositions.indexOf(position);
   if (prefIdx === 0) score += 100;
   else if (prefIdx === 1) score += 70;
@@ -347,7 +356,7 @@ function formatDateShort(date) {
 
 // --- Schedule Quality Scoring ---
 
-export function scoreSchedule(schedule, preferences, historicalData) {
+export function scoreSchedule(schedule, preferences, historicalData, rankings = {}) {
   const assignments = Object.values(schedule).flat().filter(a => a.employee);
 
   if (assignments.length === 0) {
@@ -402,9 +411,25 @@ export function scoreSchedule(schedule, preferences, historicalData) {
     workload = Math.round(Math.max(0, 100 - maxDev * 20));
   }
 
-  const overall = Math.round((preference + rotation + workload) / 3);
+  // 4. Ranking alignment (0-100) — how well the schedule matches manager rankings
+  let rankingScore = 0;
+  let rankingCount = 0;
+  for (const a of assignments) {
+    const posRanking = rankings[a.position] || [];
+    if (posRanking.length === 0) continue;
+    const rankIdx = posRanking.indexOf(a.employee);
+    if (rankIdx === 0) rankingScore += 100;
+    else if (rankIdx === 1) rankingScore += 85;
+    else if (rankIdx === 2) rankingScore += 70;
+    else if (rankIdx >= 3) rankingScore += Math.max(55 - (rankIdx - 3) * 10, 10);
+    else rankingScore += 20; // Not ranked for this position
+    rankingCount++;
+  }
+  const ranking = rankingCount > 0 ? Math.round(rankingScore / rankingCount) : 100;
 
-  return { rotation, preference, workload, overall };
+  const overall = Math.round((preference + rotation + workload + ranking) / 4);
+
+  return { rotation, preference, workload, ranking, overall };
 }
 
 // --- Utility: Get next Monday from a date ---

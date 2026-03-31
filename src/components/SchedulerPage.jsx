@@ -3,6 +3,7 @@ import EmployeePreferences from './EmployeePreferences';
 import ShiftTemplates from './ShiftTemplates';
 import ScheduleGrid from './ScheduleGrid';
 import ScheduleQuality from './ScheduleQuality';
+import PositionRankings from './PositionRankings';
 import {
   analyzeEmployeeHistory,
   buildDefaultPreferences,
@@ -14,6 +15,7 @@ import {
 } from '../utils/schedulerUtils';
 
 const PREFS_STORAGE_KEY = 'schedule-viewer-preferences';
+const RANKINGS_STORAGE_KEY = 'schedule-viewer-rankings';
 
 function loadStoredPrefs() {
   try {
@@ -28,6 +30,19 @@ function savePrefs(prefs) {
   localStorage.setItem(PREFS_STORAGE_KEY, JSON.stringify(prefs));
 }
 
+function loadStoredRankings() {
+  try {
+    const raw = localStorage.getItem(RANKINGS_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveRankings(rankings) {
+  localStorage.setItem(RANKINGS_STORAGE_KEY, JSON.stringify(rankings));
+}
+
 export default function SchedulerPage({ data }) {
   const [activeTab, setActiveTab] = useState('schedule');
   const [preferences, setPreferences] = useState(null);
@@ -35,6 +50,7 @@ export default function SchedulerPage({ data }) {
   const [schedule, setSchedule] = useState(null);
   const [scores, setScores] = useState(null);
   const [weekStart, setWeekStart] = useState(() => getNextMonday());
+  const [rankings, setRankings] = useState(() => loadStoredRankings() || {});
 
   // Analyze historical data
   const historyAnalysis = useMemo(() => {
@@ -68,17 +84,22 @@ export default function SchedulerPage({ data }) {
     savePrefs(newPrefs);
   };
 
+  const handleRankingsChange = (newRankings) => {
+    setRankings(newRankings);
+    saveRankings(newRankings);
+  };
+
   const handleGenerate = () => {
     if (!template || !preferences || !data) return;
-    const newSchedule = generateSchedule(template, preferences, data, weekStart);
+    const newSchedule = generateSchedule(template, preferences, data, weekStart, rankings);
     setSchedule(newSchedule);
-    setScores(scoreSchedule(newSchedule, preferences, data));
+    setScores(scoreSchedule(newSchedule, preferences, data, rankings));
   };
 
   const handleScheduleChange = (newSchedule) => {
     setSchedule(newSchedule);
     if (preferences && data) {
-      setScores(scoreSchedule(newSchedule, preferences, data));
+      setScores(scoreSchedule(newSchedule, preferences, data, rankings));
     }
   };
 
@@ -103,6 +124,7 @@ export default function SchedulerPage({ data }) {
 
   const tabs = [
     { id: 'schedule', label: 'Schedule' },
+    { id: 'rankings', label: 'Rankings' },
     { id: 'preferences', label: 'Preferences' },
     { id: 'templates', label: 'Templates' },
   ];
@@ -172,10 +194,19 @@ export default function SchedulerPage({ data }) {
         </div>
       )}
 
+      {activeTab === 'rankings' && (
+        <PositionRankings
+          rankings={rankings}
+          onChange={handleRankingsChange}
+          employeeNames={Object.keys(preferences).sort()}
+        />
+      )}
+
       {activeTab === 'preferences' && (
         <EmployeePreferences
           preferences={preferences}
           onChange={handlePreferencesChange}
+          rankings={rankings}
         />
       )}
 

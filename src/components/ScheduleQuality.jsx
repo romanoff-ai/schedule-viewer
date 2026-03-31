@@ -5,6 +5,7 @@ export default function ScheduleQuality({ scores, schedule, preferences }) {
   if (!scores || !schedule) return null;
 
   const metrics = [
+    { label: 'Ranking Alignment', value: scores.ranking ?? 100, color: '#eab308' },
     { label: 'Preference Match', value: scores.preference, color: '#3b82f6' },
     { label: 'Position Rotation', value: scores.rotation, color: '#22c55e' },
     { label: 'Workload Balance', value: scores.workload, color: '#a855f7' },
