@@ -146,13 +146,26 @@ export function getDayOfWeek(dateStr) {
 }
 
 export function deduplicateData(rawData) {
-  // Priority uses raw (uncleaned) workgroup names since processData hasn't run yet
-  // cleanWorkgroupName strips leading "N. " prefixes, so we match raw names broadly
+  // DEDUP NOTE (2026-03-31): Cross-workgroup duplicates removed.
+  // OnTrack lists employees in multiple workgroups simultaneously, causing the same
+  // shift to appear 2-3x with identical date+times but different workgroups.
+  // We keep the highest-priority workgroup entry and remove the rest.
+  // If this causes data issues, check: was the employee actually working split shifts
+  // across outlets on the same day with the same start/end times? (Rare but possible.)
+  // Affected employees: Marshall Kemp (649), Juno Aldana (646), Dodd Bates (520),
+  // Mario Lopez (518), Samantha Tellez (407), Michelle Lopez (363), and 7 others.
+  // Total removed: ~5,260 records (14.6% of dataset).
+
   function workgroupPriority(wg) {
     const clean = cleanWorkgroupName(wg || '');
     if (clean === 'Peacock Bar') return 0;
     if (clean === 'Quill Room') return 1;
     if (clean === 'Goldies Mixologist') return 2;
+    if (clean === 'Peacock Barback') return 3;
+    if (clean === 'Peacock Hosts') return 4;
+    if (clean === 'Peacock Servers') return 5;
+    if (clean === 'Peacock Bussers') return 6;
+    if (clean === 'Peacock Runners') return 7;
     return 99;
   }
 
@@ -175,23 +188,30 @@ export function deduplicateData(rawData) {
       return;
     }
 
-    // Group by schedule text — same schedule across any workgroup = duplicate
-    const bySchedule = {};
+    // Group by time signature: (startTime + endTime) OR schedule text
+    // This catches cross-workgroup dupes where same person has identical times
+    // in different workgroups on the same date
+    const byTimeSlot = {};
     records.forEach(r => {
+      const start = (r.startTime || '').trim();
+      const end = (r.endTime || '').trim();
       const sched = (r.schedule || '').trim();
-      if (!bySchedule[sched]) bySchedule[sched] = [];
-      bySchedule[sched].push(r);
+
+      // Use start+end times as primary key if available, fall back to schedule text
+      const timeKey = (start && end) ? `${start}|${end}` : sched;
+      if (!byTimeSlot[timeKey]) byTimeSlot[timeKey] = [];
+      byTimeSlot[timeKey].push(r);
     });
 
-    // For each unique schedule text, keep only the best one (priority order)
-    const uniqueBySchedule = Object.values(bySchedule).map(group => prioritySort(group)[0]);
+    // For each unique time slot, keep only the best one (priority order)
+    const uniqueByTime = Object.values(byTimeSlot).map(group => prioritySort(group)[0]);
 
-    // From the unique-schedule records, keep working shifts; if all off, keep one
-    const working = uniqueBySchedule.filter(r => isWorkingShift(r));
+    // From the unique-time records, keep working shifts; if all off, keep one
+    const working = uniqueByTime.filter(r => isWorkingShift(r));
     if (working.length > 0) {
       working.forEach(r => deduped.push(r));
     } else {
-      deduped.push(prioritySort(uniqueBySchedule)[0]);
+      deduped.push(prioritySort(uniqueByTime)[0]);
     }
   });
 
