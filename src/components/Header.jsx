@@ -58,21 +58,25 @@ export default function Header({ allEmployees, allWorkgroups, filters, onFilterC
   }, []);
 
   // Collapse header on scroll down, expand on scroll up
+  // Don't auto-collapse while user has manually expanded filters
   useEffect(() => {
     function handleScroll() {
       const currentY = window.scrollY;
+      if (filtersExpanded) {
+        // User manually toggled filters open — don't fight them
+        lastScrollY.current = currentY;
+        return;
+      }
       if (currentY > 100 && currentY > lastScrollY.current) {
         setFiltersCollapsed(true);
-        setFiltersExpanded(false);
       } else if (currentY < lastScrollY.current - 10) {
         setFiltersCollapsed(false);
-        setFiltersExpanded(false);
       }
       lastScrollY.current = currentY;
     }
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [filtersExpanded]);
 
   const toggleEmployee = (name) => {
     const current = filters.employees;
@@ -123,7 +127,15 @@ export default function Header({ allEmployees, allWorkgroups, filters, onFilterC
 
           {filtersCollapsed && (
             <button
-              onClick={() => setFiltersExpanded(prev => !prev)}
+              onClick={() => {
+                setFiltersExpanded(prev => {
+                  if (prev) {
+                    // Closing — let scroll handler take over again
+                    return false;
+                  }
+                  return true;
+                });
+              }}
               className="flex items-center gap-1.5 bg-slate-700 hover:bg-slate-600 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-slate-200 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,8 +160,8 @@ export default function Header({ allEmployees, allWorkgroups, filters, onFilterC
 
         {/* Collapsible filter section */}
         <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            showFilters ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
+          className={`transition-all duration-300 ease-in-out ${
+            showFilters ? 'max-h-[2000px] opacity-100 overflow-visible' : 'max-h-0 opacity-0 overflow-hidden'
           }`}
         >
           <div className="flex flex-wrap gap-3 items-end py-4">
