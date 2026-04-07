@@ -1,0 +1,19 @@
+{
+  "date": "2026-04-07",
+  "comparedTo": "2026-04-07",
+  "totalChanges": 0,
+  "added": [],
+  "removed": [],
+  "timeChanges": [],
+  "positionChanges": [],
+  "statusChanges": [],
+  "marshallImpacted": false,
+  "rawDiff": {
+    "added": 0,
+    "removed": 0,
+    "timeChanges": 0,
+    "positionChanges": 0,
+    "statusChanges": 0
+  },
+  "summary": "Test run — compared data against itself. 0 changes expected."
+}
