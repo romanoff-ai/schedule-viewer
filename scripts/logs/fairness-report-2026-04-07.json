@@ -1,0 +1,1077 @@
+{
+  "generatedAt": "2026-04-07T04:22:27.239Z",
+  "dateRange": "3/9/2026 – 4/6/2026",
+  "overallScore": 57,
+  "metrics": {
+    "weekendShare": {
+      "score": 76,
+      "weight": 25,
+      "avgPct": 50.9
+    },
+    "positionRotation": {
+      "score": 0,
+      "weight": 20,
+      "avgVariety": 1.2
+    },
+    "closingShifts": {
+      "score": 40,
+      "weight": 15,
+      "avgPct": 23.3
+    },
+    "holidayCoverage": {
+      "score": 100,
+      "weight": 10
+    },
+    "hoursEquity": {
+      "score": 64,
+      "weight": 15
+    },
+    "primeShiftAccess": {
+      "score": 80,
+      "weight": 15
+    }
+  },
+  "employeeStats": [
+    {
+      "name": "Marshall Kemp",
+      "totalShifts": 26,
+      "weekendPct": 46.2,
+      "closingPct": 92.3,
+      "positionVariety": 3,
+      "positions": [
+        "Service Well",
+        "Floor",
+        "Bar Top"
+      ],
+      "holidayCount": 0,
+      "totalHours": 107,
+      "avgPrimeValue": 52.7,
+      "maxConsecutiveDays": 8,
+      "consecutiveRange": "3/10 – 3/17"
+    },
+    {
+      "name": "Michelle Lopez",
+      "totalShifts": 16,
+      "weekendPct": 50,
+      "closingPct": 87.5,
+      "positionVariety": 2,
+      "positions": [
+        "Satellite Bar",
+        "Quill"
+      ],
+      "holidayCount": 0,
+      "totalHours": 56.5,
+      "avgPrimeValue": 35.4,
+      "maxConsecutiveDays": 2,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Albi Guce",
+      "totalShifts": 2,
+      "weekendPct": 50,
+      "closingPct": 100,
+      "positionVariety": 1,
+      "positions": [
+        "Quill"
+      ],
+      "holidayCount": 0,
+      "totalHours": 14,
+      "avgPrimeValue": 28,
+      "maxConsecutiveDays": 1,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Juno Aldana",
+      "totalShifts": 24,
+      "weekendPct": 50,
+      "closingPct": 33.3,
+      "positionVariety": 1,
+      "positions": [
+        "Goldies"
+      ],
+      "holidayCount": 0,
+      "totalHours": 92,
+      "avgPrimeValue": 30.7,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/11 – 3/15"
+    },
+    {
+      "name": "Elly Gerber",
+      "totalShifts": 30,
+      "weekendPct": 60,
+      "closingPct": 33.3,
+      "positionVariety": 2,
+      "positions": [
+        "Goldies",
+        "PK Bar"
+      ],
+      "holidayCount": 0,
+      "totalHours": 103.8,
+      "avgPrimeValue": 30.9,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/11 – 3/15"
+    },
+    {
+      "name": "Angela Galeana-Garcia",
+      "totalShifts": 26,
+      "weekendPct": 61.5,
+      "closingPct": 7.7,
+      "positionVariety": 1,
+      "positions": [
+        "Goldies"
+      ],
+      "holidayCount": 0,
+      "totalHours": 82.3,
+      "avgPrimeValue": 31.4,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/25 – 3/29"
+    },
+    {
+      "name": "Kevin Burch",
+      "totalShifts": 33,
+      "weekendPct": 51.5,
+      "closingPct": 87.9,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 142.5,
+      "avgPrimeValue": 36.1,
+      "maxConsecutiveDays": 19,
+      "consecutiveRange": "3/11 – 3/29"
+    },
+    {
+      "name": "Christopher Acosta",
+      "totalShifts": 42,
+      "weekendPct": 52.4,
+      "closingPct": 59.5,
+      "positionVariety": 5,
+      "positions": [
+        "Patio Bar",
+        "Bar Top",
+        "Service Well",
+        "Floor",
+        "Kappo"
+      ],
+      "holidayCount": 0,
+      "totalHours": 231,
+      "avgPrimeValue": 41.2,
+      "maxConsecutiveDays": 11,
+      "consecutiveRange": "3/19 – 3/29"
+    },
+    {
+      "name": "Ponce Soldevila Hernan",
+      "totalShifts": 29,
+      "weekendPct": 58.6,
+      "closingPct": 100,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 126,
+      "avgPrimeValue": 38.3,
+      "maxConsecutiveDays": 12,
+      "consecutiveRange": "3/11 – 3/22"
+    },
+    {
+      "name": "Nanami Harada",
+      "totalShifts": 12,
+      "weekendPct": 100,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 34.5,
+      "avgPrimeValue": 43.3,
+      "maxConsecutiveDays": 3,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Annalyssa Aranda",
+      "totalShifts": 11,
+      "weekendPct": 36.4,
+      "closingPct": 54.5,
+      "positionVariety": 3,
+      "positions": [
+        "Patio Bar",
+        "Floor",
+        "Bar Top"
+      ],
+      "holidayCount": 0,
+      "totalHours": 92,
+      "avgPrimeValue": 53.5,
+      "maxConsecutiveDays": 6,
+      "consecutiveRange": "3/9 – 3/14"
+    },
+    {
+      "name": "James Lee",
+      "totalShifts": 13,
+      "weekendPct": 38.5,
+      "closingPct": 92.3,
+      "positionVariety": 4,
+      "positions": [
+        "Floor",
+        "Bar Top",
+        "Service Well",
+        "Patio Bar"
+      ],
+      "holidayCount": 0,
+      "totalHours": 114,
+      "avgPrimeValue": 48.2,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/9 – 3/13"
+    },
+    {
+      "name": "Tiffany Rolan",
+      "totalShifts": 15,
+      "weekendPct": 33.3,
+      "closingPct": 66.7,
+      "positionVariety": 3,
+      "positions": [
+        "Bar Top",
+        "Floor",
+        "Patio Bar"
+      ],
+      "holidayCount": 0,
+      "totalHours": 128,
+      "avgPrimeValue": 36.9,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/23 – 3/27"
+    },
+    {
+      "name": "Logan Ley",
+      "totalShifts": 15,
+      "weekendPct": 53.3,
+      "closingPct": 40,
+      "positionVariety": 4,
+      "positions": [
+        "Service Well",
+        "Floor",
+        "Patio Bar",
+        "Bar Top"
+      ],
+      "holidayCount": 0,
+      "totalHours": 124,
+      "avgPrimeValue": 43.1,
+      "maxConsecutiveDays": 6,
+      "consecutiveRange": "3/12 – 3/17"
+    },
+    {
+      "name": "Alexis Gonzales",
+      "totalShifts": 14,
+      "weekendPct": 42.9,
+      "closingPct": 71.4,
+      "positionVariety": 3,
+      "positions": [
+        "Bar Top",
+        "Floor",
+        "Service Well"
+      ],
+      "holidayCount": 0,
+      "totalHours": 118,
+      "avgPrimeValue": 60,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/10 – 3/14"
+    },
+    {
+      "name": "Jennifer Acosta",
+      "totalShifts": 16,
+      "weekendPct": 56.3,
+      "closingPct": 56.3,
+      "positionVariety": 4,
+      "positions": [
+        "Service Well",
+        "Floor",
+        "Patio Bar",
+        "Bar Top"
+      ],
+      "holidayCount": 0,
+      "totalHours": 136,
+      "avgPrimeValue": 46.3,
+      "maxConsecutiveDays": 6,
+      "consecutiveRange": "3/24 – 3/29"
+    },
+    {
+      "name": "Jennifer Adams",
+      "totalShifts": 15,
+      "weekendPct": 60,
+      "closingPct": 80,
+      "positionVariety": 4,
+      "positions": [
+        "Bar Top",
+        "Floor",
+        "Patio Bar",
+        "Service Well"
+      ],
+      "holidayCount": 0,
+      "totalHours": 130,
+      "avgPrimeValue": 68.9,
+      "maxConsecutiveDays": 6,
+      "consecutiveRange": "3/18 – 3/23"
+    },
+    {
+      "name": "Joshua Loewen",
+      "totalShifts": 32,
+      "weekendPct": 56.3,
+      "closingPct": 68.8,
+      "positionVariety": 6,
+      "positions": [
+        "Goldies",
+        "Quill",
+        "Floor",
+        "Bar Top",
+        "Service Well",
+        "Mixologist"
+      ],
+      "holidayCount": 0,
+      "totalHours": 124,
+      "avgPrimeValue": 35.5,
+      "maxConsecutiveDays": 6,
+      "consecutiveRange": "3/18 – 3/23"
+    },
+    {
+      "name": "Alejandro Sic",
+      "totalShifts": 15,
+      "weekendPct": 60,
+      "closingPct": 86.7,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 129,
+      "avgPrimeValue": 38,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/18 – 3/22"
+    },
+    {
+      "name": "Andrew De Leon",
+      "totalShifts": 15,
+      "weekendPct": 60,
+      "closingPct": 66.7,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 123,
+      "avgPrimeValue": 34,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/13 – 3/17"
+    },
+    {
+      "name": "Marilyn Huerta",
+      "totalShifts": 15,
+      "weekendPct": 40,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 105,
+      "avgPrimeValue": 36,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/10 – 3/14"
+    },
+    {
+      "name": "Rigoberto Algua",
+      "totalShifts": 18,
+      "weekendPct": 50,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 132,
+      "avgPrimeValue": 35,
+      "maxConsecutiveDays": 6,
+      "consecutiveRange": "3/12 – 3/17"
+    },
+    {
+      "name": "Sergio Ordonez",
+      "totalShifts": 18,
+      "weekendPct": 33.3,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 117,
+      "avgPrimeValue": 30,
+      "maxConsecutiveDays": 6,
+      "consecutiveRange": "3/14 – 3/19"
+    },
+    {
+      "name": "Mario Lopez",
+      "totalShifts": 35,
+      "weekendPct": 54.3,
+      "closingPct": 34.3,
+      "positionVariety": 1,
+      "positions": [
+        "Quill"
+      ],
+      "holidayCount": 0,
+      "totalHours": 115.5,
+      "avgPrimeValue": 33.3,
+      "maxConsecutiveDays": 8,
+      "consecutiveRange": "3/11 – 3/18"
+    },
+    {
+      "name": "Bernardo Prada Suarez",
+      "totalShifts": 15,
+      "weekendPct": 60,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 111,
+      "avgPrimeValue": 34,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/13 – 3/17"
+    },
+    {
+      "name": "Israel Ordonez",
+      "totalShifts": 18,
+      "weekendPct": 50,
+      "closingPct": 33.3,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 136.5,
+      "avgPrimeValue": 35,
+      "maxConsecutiveDays": 6,
+      "consecutiveRange": "3/10 – 3/15"
+    },
+    {
+      "name": "Mariano López García",
+      "totalShifts": 15,
+      "weekendPct": 40,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 120,
+      "avgPrimeValue": 36,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/10 – 3/14"
+    },
+    {
+      "name": "Rafael Catalan",
+      "totalShifts": 15,
+      "weekendPct": 60,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 105,
+      "avgPrimeValue": 38,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/11 – 3/15"
+    },
+    {
+      "name": "Carlos Murillo",
+      "totalShifts": 15,
+      "weekendPct": 60,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 120,
+      "avgPrimeValue": 38,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/11 – 3/15"
+    },
+    {
+      "name": "Dodd Bates",
+      "totalShifts": 21,
+      "weekendPct": 38.1,
+      "closingPct": 47.6,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 64.8,
+      "avgPrimeValue": 31.2,
+      "maxConsecutiveDays": 3,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Jasmin Salinas",
+      "totalShifts": 6,
+      "weekendPct": 0,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 45,
+      "avgPrimeValue": 20,
+      "maxConsecutiveDays": 3,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Kaitlin Reed",
+      "totalShifts": 15,
+      "weekendPct": 53.3,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 107,
+      "avgPrimeValue": 36,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/12 – 3/16"
+    },
+    {
+      "name": "Akkanshya K C",
+      "totalShifts": 16,
+      "weekendPct": 56.3,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 128.5,
+      "avgPrimeValue": 34.4,
+      "maxConsecutiveDays": 6,
+      "consecutiveRange": "3/17 – 3/22"
+    },
+    {
+      "name": "Kaissa Doichev",
+      "totalShifts": 7,
+      "weekendPct": 57.1,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 47,
+      "avgPrimeValue": 40,
+      "maxConsecutiveDays": 3,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Samantha Tellez",
+      "totalShifts": 7,
+      "weekendPct": 85.7,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "PK Bar"
+      ],
+      "holidayCount": 0,
+      "totalHours": 57.5,
+      "avgPrimeValue": 37.1,
+      "maxConsecutiveDays": 2,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Alana Spaeth",
+      "totalShifts": 3,
+      "weekendPct": 100,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 19,
+      "avgPrimeValue": 43.3,
+      "maxConsecutiveDays": 2,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Grant Papazian",
+      "totalShifts": 17,
+      "weekendPct": 35.3,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "PK Bar"
+      ],
+      "holidayCount": 0,
+      "totalHours": 148.5,
+      "avgPrimeValue": 34.1,
+      "maxConsecutiveDays": 6,
+      "consecutiveRange": "3/9 – 3/14"
+    },
+    {
+      "name": "Osvaldo Martinez",
+      "totalShifts": 15,
+      "weekendPct": 60,
+      "closingPct": 0,
+      "positionVariety": 2,
+      "positions": [
+        "PK Bar",
+        "Training"
+      ],
+      "holidayCount": 0,
+      "totalHours": 122.5,
+      "avgPrimeValue": 38,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/12 – 3/16"
+    },
+    {
+      "name": "Christian Harbour",
+      "totalShifts": 15,
+      "weekendPct": 60,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Training"
+      ],
+      "holidayCount": 0,
+      "totalHours": 129.8,
+      "avgPrimeValue": 34,
+      "maxConsecutiveDays": 3,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Karen Sanchez",
+      "totalShifts": 15,
+      "weekendPct": 26.7,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Goldies"
+      ],
+      "holidayCount": 0,
+      "totalHours": 118.5,
+      "avgPrimeValue": 27.5,
+      "maxConsecutiveDays": 6,
+      "consecutiveRange": "3/14 – 3/19"
+    },
+    {
+      "name": "Alannah Hochstetler",
+      "totalShifts": 12,
+      "weekendPct": 16.7,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 78,
+      "avgPrimeValue": 25,
+      "maxConsecutiveDays": 4,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Maxwell Houston",
+      "totalShifts": 4,
+      "weekendPct": 75,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Training"
+      ],
+      "holidayCount": 0,
+      "totalHours": 29,
+      "avgPrimeValue": 42.5,
+      "maxConsecutiveDays": 4,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Jamaal Washington",
+      "totalShifts": 4,
+      "weekendPct": 75,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Training"
+      ],
+      "holidayCount": 0,
+      "totalHours": 29,
+      "avgPrimeValue": 42.5,
+      "maxConsecutiveDays": 4,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Andrei Shpilev",
+      "totalShifts": 15,
+      "weekendPct": 53.3,
+      "closingPct": 0,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 127.5,
+      "avgPrimeValue": 37.3,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/12 – 3/16"
+    },
+    {
+      "name": "Dayana Martinez Sosa",
+      "totalShifts": 30,
+      "weekendPct": 46.7,
+      "closingPct": 13.3,
+      "positionVariety": 1,
+      "positions": [
+        "Training"
+      ],
+      "holidayCount": 0,
+      "totalHours": 113,
+      "avgPrimeValue": 35.3,
+      "maxConsecutiveDays": 4,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Ivan Honcharuk",
+      "totalShifts": 15,
+      "weekendPct": 60,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Closer"
+      ],
+      "holidayCount": 0,
+      "totalHours": 105.5,
+      "avgPrimeValue": 41,
+      "maxConsecutiveDays": 4,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "John Cantabene",
+      "totalShifts": 15,
+      "weekendPct": 60,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Training"
+      ],
+      "holidayCount": 0,
+      "totalHours": 127.3,
+      "avgPrimeValue": 38,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/12 – 3/16"
+    },
+    {
+      "name": "Laurel Swindler",
+      "totalShifts": 15,
+      "weekendPct": 60,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Closer"
+      ],
+      "holidayCount": 0,
+      "totalHours": 105,
+      "avgPrimeValue": 36,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/13 – 3/17"
+    },
+    {
+      "name": "Luz Martinez",
+      "totalShifts": 14,
+      "weekendPct": 28.6,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Closer"
+      ],
+      "holidayCount": 0,
+      "totalHours": 98.5,
+      "avgPrimeValue": 35,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/9 – 3/13"
+    },
+    {
+      "name": "Max Tukaemah",
+      "totalShifts": 15,
+      "weekendPct": 60,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Closer"
+      ],
+      "holidayCount": 0,
+      "totalHours": 106,
+      "avgPrimeValue": 38.7,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/13 – 3/17"
+    },
+    {
+      "name": "Terry Dodd Jr.",
+      "totalShifts": 13,
+      "weekendPct": 53.8,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Closer"
+      ],
+      "holidayCount": 0,
+      "totalHours": 92.5,
+      "avgPrimeValue": 45,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/12 – 3/16"
+    },
+    {
+      "name": "Tristan Scott Seghpossian",
+      "totalShifts": 15,
+      "weekendPct": 40,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Training"
+      ],
+      "holidayCount": 0,
+      "totalHours": 121.8,
+      "avgPrimeValue": 28,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/14 – 3/18"
+    },
+    {
+      "name": "Tyler Serle",
+      "totalShifts": 15,
+      "weekendPct": 20,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Closer"
+      ],
+      "holidayCount": 0,
+      "totalHours": 105.5,
+      "avgPrimeValue": 32,
+      "maxConsecutiveDays": 6,
+      "consecutiveRange": "3/22 – 3/27"
+    },
+    {
+      "name": "Bianca Molfino-O'Carroll",
+      "totalShifts": 14,
+      "weekendPct": 50,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Closer"
+      ],
+      "holidayCount": 0,
+      "totalHours": 98.5,
+      "avgPrimeValue": 42.1,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/10 – 3/14"
+    },
+    {
+      "name": "Bora Tiren",
+      "totalShifts": 15,
+      "weekendPct": 40,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Closer"
+      ],
+      "holidayCount": 0,
+      "totalHours": 105.5,
+      "avgPrimeValue": 41,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/10 – 3/14"
+    },
+    {
+      "name": "Cody Horton",
+      "totalShifts": 5,
+      "weekendPct": 60,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Closer"
+      ],
+      "holidayCount": 0,
+      "totalHours": 35,
+      "avgPrimeValue": 35,
+      "maxConsecutiveDays": 1,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Gabriel Maldonado",
+      "totalShifts": 15,
+      "weekendPct": 40,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Training"
+      ],
+      "holidayCount": 0,
+      "totalHours": 125.8,
+      "avgPrimeValue": 36,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/10 – 3/14"
+    },
+    {
+      "name": "Gigi Porreca",
+      "totalShifts": 15,
+      "weekendPct": 40,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Closer"
+      ],
+      "holidayCount": 0,
+      "totalHours": 105.5,
+      "avgPrimeValue": 38,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/10 – 3/14"
+    },
+    {
+      "name": "Deanna Gonzalez",
+      "totalShifts": 15,
+      "weekendPct": 60,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Training"
+      ],
+      "holidayCount": 0,
+      "totalHours": 125.3,
+      "avgPrimeValue": 38,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/11 – 3/15"
+    },
+    {
+      "name": "Lyndi Hill",
+      "totalShifts": 11,
+      "weekendPct": 36.4,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Closer"
+      ],
+      "holidayCount": 0,
+      "totalHours": 77.5,
+      "avgPrimeValue": 40.9,
+      "maxConsecutiveDays": 4,
+      "consecutiveRange": ""
+    },
+    {
+      "name": "Shea Pardo",
+      "totalShifts": 13,
+      "weekendPct": 53.8,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Closer"
+      ],
+      "holidayCount": 0,
+      "totalHours": 91.5,
+      "avgPrimeValue": 38.5,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/11 – 3/15"
+    },
+    {
+      "name": "Hannah Hilligiest",
+      "totalShifts": 10,
+      "weekendPct": 40,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Training"
+      ],
+      "holidayCount": 0,
+      "totalHours": 83.3,
+      "avgPrimeValue": 32,
+      "maxConsecutiveDays": 5,
+      "consecutiveRange": "3/22 – 3/26"
+    },
+    {
+      "name": "Jazmin Wilson",
+      "totalShifts": 10,
+      "weekendPct": 40,
+      "closingPct": 0,
+      "positionVariety": 1,
+      "positions": [
+        "Training"
+      ],
+      "holidayCount": 0,
+      "totalHours": 83.3,
+      "avgPrimeValue": 32,
+      "maxConsecutiveDays": 6,
+      "consecutiveRange": "3/21 – 3/26"
+    },
+    {
+      "name": "KC Ceschin",
+      "totalShifts": 16,
+      "weekendPct": 50,
+      "closingPct": 75,
+      "positionVariety": 0,
+      "positions": [],
+      "holidayCount": 0,
+      "totalHours": 50.5,
+      "avgPrimeValue": 35,
+      "maxConsecutiveDays": 2,
+      "consecutiveRange": ""
+    }
+  ],
+  "consecutiveAlerts": [
+    {
+      "name": "Marshall Kemp",
+      "streak": 8,
+      "range": "3/10 – 3/17"
+    },
+    {
+      "name": "Kevin Burch",
+      "streak": 19,
+      "range": "3/11 – 3/29"
+    },
+    {
+      "name": "Christopher Acosta",
+      "streak": 11,
+      "range": "3/19 – 3/29"
+    },
+    {
+      "name": "Ponce Soldevila Hernan",
+      "streak": 12,
+      "range": "3/11 – 3/22"
+    },
+    {
+      "name": "Annalyssa Aranda",
+      "streak": 6,
+      "range": "3/9 – 3/14"
+    },
+    {
+      "name": "Logan Ley",
+      "streak": 6,
+      "range": "3/12 – 3/17"
+    },
+    {
+      "name": "Jennifer Acosta",
+      "streak": 6,
+      "range": "3/24 – 3/29"
+    },
+    {
+      "name": "Jennifer Adams",
+      "streak": 6,
+      "range": "3/18 – 3/23"
+    },
+    {
+      "name": "Joshua Loewen",
+      "streak": 6,
+      "range": "3/18 – 3/23"
+    },
+    {
+      "name": "Rigoberto Algua",
+      "streak": 6,
+      "range": "3/12 – 3/17"
+    },
+    {
+      "name": "Sergio Ordonez",
+      "streak": 6,
+      "range": "3/14 – 3/19"
+    },
+    {
+      "name": "Mario Lopez",
+      "streak": 8,
+      "range": "3/11 – 3/18"
+    },
+    {
+      "name": "Israel Ordonez",
+      "streak": 6,
+      "range": "3/10 – 3/15"
+    },
+    {
+      "name": "Akkanshya K C",
+      "streak": 6,
+      "range": "3/17 – 3/22"
+    },
+    {
+      "name": "Grant Papazian",
+      "streak": 6,
+      "range": "3/9 – 3/14"
+    },
+    {
+      "name": "Karen Sanchez",
+      "streak": 6,
+      "range": "3/14 – 3/19"
+    },
+    {
+      "name": "Tyler Serle",
+      "streak": 6,
+      "range": "3/22 – 3/27"
+    },
+    {
+      "name": "Jazmin Wilson",
+      "streak": 6,
+      "range": "3/21 – 3/26"
+    }
+  ],
+  "narrative": "[TEST MODE] Narrative generation skipped. Stats computed successfully."
+}
