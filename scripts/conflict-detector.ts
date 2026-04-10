@@ -16,9 +16,9 @@ import { fileURLToPath } from 'url';
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
-const OLLAMA_URL = 'http://localhost:11434';
+const OLLAMA_URL = process.env.OLLAMA_HOST || 'http://169.254.202.173:11434';
 const MODEL = 'gemma4:31b';
-const OLLAMA_TIMEOUT = 5 * 60 * 1000;
+const OLLAMA_TIMEOUT = 20 * 60 * 1000;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = join(__dirname, '..');
 const DATA_PATH = join(PROJECT_ROOT, 'public', 'schedule-data.json');

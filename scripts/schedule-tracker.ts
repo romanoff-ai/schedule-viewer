@@ -19,7 +19,7 @@ import { fileURLToPath } from 'url';
 const OLLAMA_URL = 'http://localhost:11434';
 const MODEL = 'gemma4:31b';
 const OLLAMA_TIMEOUT = 5 * 60 * 1000; // 5 min
-const ONTRACK_BASE = 'https://www.heathandco.com/LaborProductivityTools';
+const ONTRACK_BASE = 'https://www.heathandco.com';
 const AJAX_ENDPOINT = `${ONTRACK_BASE}/EmployeeAccess/DepartmentSchedule/Items`;
 const SCRAPE_DELAY_MS = 200;
 const SNAPSHOT_RETENTION_DAYS = 30;
@@ -157,12 +157,120 @@ interface CookieData {
   savedAt: string;
 }
 
+const CREDS_PATH = join(process.env.HOME || '~', '.openclaw', 'credentials.json');
+const LOGIN_URL = 'https://www.heathandco.com/LaborProductivityTools/UserLogin.aspx';
+
 function loadCookies(): string | null {
   try {
     if (!existsSync(COOKIE_PATH)) return null;
     const data: CookieData = JSON.parse(readFileSync(COOKIE_PATH, 'utf-8'));
     return data.cookies;
   } catch {
+    return null;
+  }
+}
+
+function saveCookies(cookies: string): void {
+  writeFileSync(COOKIE_PATH, JSON.stringify({ cookies, savedAt: new Date().toISOString() }, null, 2));
+}
+
+/**
+ * Login to OnTrack via HTTP POST and return auth cookies.
+ * Performs a full ASP.NET WebForms login:
+ * 1. GET login page -> extract __VIEWSTATE, __EVENTVALIDATION, __RequestVerificationToken, session cookies
+ * 2. POST login form with credentials
+ * 3. Extract auth cookies from Set-Cookie response headers
+ */
+async function loginAndGetCookies(): Promise<string | null> {
+  try {
+    if (!existsSync(CREDS_PATH)) {
+      console.error('❌ No credentials.json found at', CREDS_PATH);
+      return null;
+    }
+    const creds = JSON.parse(readFileSync(CREDS_PATH, 'utf-8'));
+    const hc = creds.heathandco;
+    if (!hc?.username || !hc?.password) {
+      console.error('❌ Missing heathandco username/password in credentials.json');
+      return null;
+    }
+
+    console.log('   🔐 Logging in to OnTrack...');
+
+    // Step 1: GET login page to get form tokens and initial cookies
+    const getResp = await fetch(LOGIN_URL, { redirect: 'manual' });
+    const loginHtml = await getResp.text();
+
+    // Extract form fields
+    const extractField = (name: string): string => {
+      const re = new RegExp(`name="${name}"[^>]*value="([^"]*)"`);
+      const m = loginHtml.match(re);
+      return m ? m[1] : '';
+    };
+
+    const viewState = extractField('__VIEWSTATE');
+    const viewStateGen = extractField('__VIEWSTATEGENERATOR');
+    const eventValidation = extractField('__EVENTVALIDATION');
+    const reqToken = extractField('__RequestVerificationToken');
+
+    // Extract initial cookies from GET response
+    const setCookieHeaders = getResp.headers.getSetCookie?.() || [];
+    const initialCookies: Record<string, string> = {};
+    for (const sc of setCookieHeaders) {
+      const [nameVal] = sc.split(';');
+      const eqIdx = nameVal.indexOf('=');
+      if (eqIdx > 0) {
+        initialCookies[nameVal.substring(0, eqIdx)] = nameVal.substring(eqIdx + 1);
+      }
+    }
+
+    // Build cookie string for POST
+    const postCookieStr = Object.entries(initialCookies).map(([k, v]) => `${k}=${v}`).join('; ');
+
+    // Step 2: POST login form
+    const formData = new URLSearchParams({
+      '__VIEWSTATE': viewState,
+      '__VIEWSTATEGENERATOR': viewStateGen,
+      '__EVENTVALIDATION': eventValidation,
+      '__RequestVerificationToken': reqToken,
+      'UserID': hc.username,
+      'Password': hc.password,
+      'Login': 'Login',
+    });
+
+    const postResp = await fetch(LOGIN_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Cookie': postCookieStr,
+      },
+      body: formData.toString(),
+      redirect: 'manual',
+    });
+
+    if (postResp.status !== 302) {
+      console.error(`❌ Login failed — expected 302, got ${postResp.status}`);
+      return null;
+    }
+
+    // Extract auth cookies from POST response
+    const postSetCookies = postResp.headers.getSetCookie?.() || [];
+    const authCookies: Record<string, string> = { ...initialCookies };
+    for (const sc of postSetCookies) {
+      const [nameVal] = sc.split(';');
+      const eqIdx = nameVal.indexOf('=');
+      if (eqIdx > 0) {
+        authCookies[nameVal.substring(0, eqIdx)] = nameVal.substring(eqIdx + 1);
+      }
+    }
+
+    const cookieStr = Object.entries(authCookies).map(([k, v]) => `${k}=${v}`).join('; ');
+    console.log(`   ✅ Login successful — ${Object.keys(authCookies).length} cookies obtained`);
+
+    // Save for potential reuse
+    saveCookies(cookieStr);
+    return cookieStr;
+  } catch (err: any) {
+    console.error('❌ Login error:', err.message);
     return null;
   }
 }
@@ -184,6 +292,7 @@ async function scrapeAjax(cookies: string, dates: string[], workgroups: Workgrou
             'Accept': 'application/json, text/javascript, */*; q=0.01',
             'X-Requested-With': 'XMLHttpRequest',
           },
+          redirect: 'manual',
         });
 
         if (resp.status === 401 || resp.status === 403 || resp.status === 302) {
@@ -495,12 +604,13 @@ async function main() {
   }
 
   // Live mode: try AJAX scrape
-  const cookies = loadCookies();
+  let cookies = loadCookies();
   let scraped = false;
+  const dates = getDatesAhead(DAYS_AHEAD);
 
+  // Try saved cookies first
   if (cookies) {
-    console.log('🍪 Found cookies, attempting AJAX scrape...');
-    const dates = getDatesAhead(DAYS_AHEAD);
+    console.log('🍪 Found saved cookies, attempting AJAX scrape...');
     console.log(`   Scraping ${dates.length} days × ${WORKGROUPS.length} workgroups = ${dates.length * WORKGROUPS.length} requests`);
 
     todayData = await scrapeAjax(cookies, dates, WORKGROUPS);
@@ -509,10 +619,23 @@ async function main() {
       scraped = true;
       console.log(`✅ Scraped ${todayData.length} entries`);
     } else {
-      console.warn('⚠️  Scrape returned 0 entries — cookies likely expired');
+      console.warn('⚠️  Saved cookies failed — attempting fresh login...');
     }
-  } else {
-    console.warn('⚠️  No cookies found at', COOKIE_PATH);
+  }
+
+  // If saved cookies failed or missing, do a fresh login
+  if (!scraped) {
+    cookies = await loginAndGetCookies();
+    if (cookies) {
+      console.log(`   Scraping ${dates.length} days × ${WORKGROUPS.length} workgroups = ${dates.length * WORKGROUPS.length} requests`);
+      todayData = await scrapeAjax(cookies, dates, WORKGROUPS);
+      if (todayData.length > 0) {
+        scraped = true;
+        console.log(`✅ Scraped ${todayData.length} entries`);
+      } else {
+        console.warn('⚠️  Scrape returned 0 entries even after fresh login');
+      }
+    }
   }
 
   if (!scraped) {
@@ -521,7 +644,7 @@ async function main() {
       todayData = JSON.parse(readFileSync(DATA_PATH, 'utf-8'));
       console.log(`   Loaded ${todayData.length} entries`);
     } else {
-      console.error('❌ Cookies expired or missing. Run bootstrap-schedule-cookies.ts to refresh.');
+      console.error('❌ Could not scrape schedule. Check credentials in ~/.openclaw/credentials.json');
       console.error('   Or use --force-snapshot to save from cached data.');
       process.exit(1);
     }
