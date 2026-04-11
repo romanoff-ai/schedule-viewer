@@ -1,0 +1,1048 @@
+{
+  "date": "2026-04-10",
+  "comparedTo": "2026-04-09",
+  "totalChanges": 56,
+  "added": [
+    {
+      "name": "Grant Papazian",
+      "date": "2026-04-12",
+      "workgroup": "6. Peacock Runners",
+      "after": {
+        "name": "Grant Papazian",
+        "role": "Peacock Runner",
+        "date": "2026-04-12",
+        "startTime": "4:00 P",
+        "endTime": "10:30 P",
+        "schedule": "4:00 P - 10:30 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57489",
+        "workgroup": "6. Peacock Runners",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    }
+  ],
+  "removed": [
+    {
+      "name": "Alexis Gonzales",
+      "date": "2026-04-09",
+      "workgroup": "Peacock Bar",
+      "before": {
+        "name": "Alexis Gonzales",
+        "role": "PB Bartender",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "1:00 A",
+        "schedule": "4:00 P - 1:00 A",
+        "position": "BARTOP",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "65906",
+        "workgroup": "Peacock Bar",
+        "departmentId": "27409",
+        "department": "The Peacock Lounge"
+      }
+    },
+    {
+      "name": "Annalyssa Aranda",
+      "date": "2026-04-09",
+      "workgroup": "Peacock Bar",
+      "before": {
+        "name": "Annalyssa Aranda",
+        "role": "PB Bartender",
+        "date": "2026-04-09",
+        "startTime": "5:00 P",
+        "endTime": "1:00 A",
+        "schedule": "5:00 P - 1:00 A",
+        "position": "FLOOR",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "65906",
+        "workgroup": "Peacock Bar",
+        "departmentId": "27409",
+        "department": "The Peacock Lounge"
+      }
+    },
+    {
+      "name": "Jennifer Acosta",
+      "date": "2026-04-09",
+      "workgroup": "Peacock Bar",
+      "before": {
+        "name": "Jennifer Acosta",
+        "role": "PB Bartender",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "1:00 A",
+        "schedule": "4:00 P - 1:00 A",
+        "position": "FLOOR",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "65906",
+        "workgroup": "Peacock Bar",
+        "departmentId": "27409",
+        "department": "The Peacock Lounge"
+      }
+    },
+    {
+      "name": "Joshua Loewen",
+      "date": "2026-04-09",
+      "workgroup": "Peacock Bar",
+      "before": {
+        "name": "Joshua Loewen",
+        "role": "PB Bartender",
+        "date": "2026-04-09",
+        "startTime": "9:00 A",
+        "endTime": "5:00 P",
+        "schedule": "9:00 A - 5:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "65906",
+        "workgroup": "Peacock Bar",
+        "departmentId": "27409",
+        "department": "The Peacock Lounge"
+      }
+    },
+    {
+      "name": "Marshall Kemp",
+      "date": "2026-04-09",
+      "workgroup": "Peacock Bar",
+      "before": {
+        "name": "Marshall Kemp",
+        "role": "PB Bartender",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "1:00 A",
+        "schedule": "4:00 P - 1:00 A",
+        "position": "SVC WELL",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "65906",
+        "workgroup": "Peacock Bar",
+        "departmentId": "27409",
+        "department": "The Peacock Lounge"
+      }
+    },
+    {
+      "name": "Tiffany Rolan",
+      "date": "2026-04-09",
+      "workgroup": "Peacock Bar",
+      "before": {
+        "name": "Tiffany Rolan",
+        "role": "PB Bartender",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "1:00 A",
+        "schedule": "4:00 P - 1:00 A",
+        "position": "BARTOP",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "65906",
+        "workgroup": "Peacock Bar",
+        "departmentId": "27409",
+        "department": "The Peacock Lounge"
+      }
+    },
+    {
+      "name": "Alejandro Sic",
+      "date": "2026-04-09",
+      "workgroup": "Peacock Barback",
+      "before": {
+        "name": "Alejandro Sic",
+        "role": "PB Barback",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "1:00 A",
+        "schedule": "4:00 P - 1:00 A",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "81129",
+        "workgroup": "Peacock Barback",
+        "departmentId": "27409",
+        "department": "The Peacock Lounge"
+      }
+    },
+    {
+      "name": "David Garcia",
+      "date": "2026-04-09",
+      "workgroup": "Peacock Barback",
+      "before": {
+        "name": "David Garcia",
+        "role": "PB Barback",
+        "date": "2026-04-09",
+        "startTime": "9:00 A",
+        "endTime": "5:00 P",
+        "schedule": "9:00 A - 5:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "81129",
+        "workgroup": "Peacock Barback",
+        "departmentId": "27409",
+        "department": "The Peacock Lounge"
+      }
+    },
+    {
+      "name": "Akkanshya K C",
+      "date": "2026-04-09",
+      "workgroup": "2. Peacock Hosts",
+      "before": {
+        "name": "Akkanshya K C",
+        "role": "Peacock Host",
+        "date": "2026-04-09",
+        "startTime": "7:00 A",
+        "endTime": "3:00 P",
+        "schedule": "7:00 A - 3:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57485",
+        "workgroup": "2. Peacock Hosts",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Dodd Bates",
+      "date": "2026-04-09",
+      "workgroup": "2. Peacock Hosts",
+      "before": {
+        "name": "Dodd Bates",
+        "role": "Peacock Host",
+        "date": "2026-04-09",
+        "startTime": "5:00 P",
+        "endTime": "10:30 P",
+        "schedule": "5:00 P - 10:30 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57485",
+        "workgroup": "2. Peacock Hosts",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Juno Aldana",
+      "date": "2026-04-09",
+      "workgroup": "2. Peacock Hosts",
+      "before": {
+        "name": "Juno Aldana",
+        "role": "Peacock Host",
+        "date": "2026-04-09",
+        "startTime": "3:30 P",
+        "endTime": "12:00 A",
+        "schedule": "3:30 P - 12:00 A",
+        "position": "GOLDIES HOST",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57485",
+        "workgroup": "2. Peacock Hosts",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Kaissa Doichev",
+      "date": "2026-04-09",
+      "workgroup": "2. Peacock Hosts",
+      "before": {
+        "name": "Kaissa Doichev",
+        "role": "Peacock Host",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "10:30 P",
+        "schedule": "4:00 P - 10:30 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57485",
+        "workgroup": "2. Peacock Hosts",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Lyndi Hill",
+      "date": "2026-04-09",
+      "workgroup": "2. Peacock Hosts",
+      "before": {
+        "name": "Lyndi Hill",
+        "role": "Peacock Host",
+        "date": "2026-04-09",
+        "startTime": "3:00 P",
+        "endTime": "10:00 P",
+        "schedule": "3:00 P - 10:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57485",
+        "workgroup": "2. Peacock Hosts",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Bianca Molfino-O&#39;Carroll",
+      "date": "2026-04-09",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Bianca Molfino-O&#39;Carroll",
+        "role": "Peacock Server",
+        "date": "2026-04-09",
+        "startTime": "5:00 P",
+        "endTime": "11:00 P",
+        "schedule": "5:00 P - 11:00 P",
+        "position": "CLOSER",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Bora Tiren",
+      "date": "2026-04-09",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Bora Tiren",
+        "role": "Peacock Server",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "11:00 P",
+        "schedule": "4:00 P - 11:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Deanna Gonzalez",
+      "date": "2026-04-09",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Deanna Gonzalez",
+        "role": "Peacock Server",
+        "date": "2026-04-09",
+        "startTime": "6:45 A",
+        "endTime": "3:00 P",
+        "schedule": "6:45 A - 3:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Gabriel Maldonado",
+      "date": "2026-04-09",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Gabriel Maldonado",
+        "role": "Peacock Server",
+        "date": "2026-04-09",
+        "startTime": "6:45 A",
+        "endTime": "3:00 P",
+        "schedule": "6:45 A - 3:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Gigi Porreca",
+      "date": "2026-04-09",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Gigi Porreca",
+        "role": "Peacock Server",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "11:00 P",
+        "schedule": "4:00 P - 11:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Ivan Honcharuk",
+      "date": "2026-04-09",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Ivan Honcharuk",
+        "role": "Peacock Server",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "11:00 P",
+        "schedule": "4:00 P - 11:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Hannah Hilligiest",
+      "date": "2026-04-09",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Hannah Hilligiest",
+        "role": "Peacock Server",
+        "date": "2026-04-09",
+        "startTime": "8:00 A",
+        "endTime": "4:30 P",
+        "schedule": "8:00 A - 4:30 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Laurel Swindler",
+      "date": "2026-04-09",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Laurel Swindler",
+        "role": "Peacock Server",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "11:00 P",
+        "schedule": "4:00 P - 11:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Luz Martinez",
+      "date": "2026-04-09",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Luz Martinez",
+        "role": "Peacock Server",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "11:00 P",
+        "schedule": "4:00 P - 11:00 P",
+        "position": "CLOSER",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Lyndi Hill",
+      "date": "2026-04-09",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Lyndi Hill",
+        "role": "Peacock Server",
+        "date": "2026-04-09",
+        "startTime": "3:00 P",
+        "endTime": "10:00 P",
+        "schedule": "3:00 P - 10:00 P",
+        "position": "Peacock Host",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Shea Pardo",
+      "date": "2026-04-09",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Shea Pardo",
+        "role": "Peacock Server",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "11:00 P",
+        "schedule": "4:00 P - 11:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Terry Dodd Jr.",
+      "date": "2026-04-09",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Terry Dodd Jr.",
+        "role": "Peacock Server",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "11:00 P",
+        "schedule": "4:00 P - 11:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Tyler Serle",
+      "date": "2026-04-09",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Tyler Serle",
+        "role": "Peacock Server",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "11:00 P",
+        "schedule": "4:00 P - 11:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Rigoberto Algua",
+      "date": "2026-04-09",
+      "workgroup": "5. Peacock Bussers",
+      "before": {
+        "name": "Rigoberto Algua",
+        "role": "Peacock Busser",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "11:30 P",
+        "schedule": "4:00 P - 11:30 P",
+        "position": "LOUNGE",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57488",
+        "workgroup": "5. Peacock Bussers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Israel Ordonez",
+      "date": "2026-04-09",
+      "workgroup": "5. Peacock Bussers",
+      "before": {
+        "name": "Israel Ordonez",
+        "role": "Peacock Busser",
+        "date": "2026-04-09",
+        "startTime": "4:30 P",
+        "endTime": "11:00 P",
+        "schedule": "4:30 P - 11:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57488",
+        "workgroup": "5. Peacock Bussers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Sergio Ordonez",
+      "date": "2026-04-09",
+      "workgroup": "5. Peacock Bussers",
+      "before": {
+        "name": "Sergio Ordonez",
+        "role": "Peacock Busser",
+        "date": "2026-04-09",
+        "startTime": "4:30 P",
+        "endTime": "11:00 P",
+        "schedule": "4:30 P - 11:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57488",
+        "workgroup": "5. Peacock Bussers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Rafael Catalan",
+      "date": "2026-04-09",
+      "workgroup": "5. Peacock Bussers",
+      "before": {
+        "name": "Rafael Catalan",
+        "role": "Peacock Busser",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "11:00 P",
+        "schedule": "4:00 P - 11:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57488",
+        "workgroup": "5. Peacock Bussers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Carlos Murillo",
+      "date": "2026-04-09",
+      "workgroup": "5. Peacock Bussers",
+      "before": {
+        "name": "Carlos Murillo",
+        "role": "Peacock Busser",
+        "date": "2026-04-09",
+        "startTime": "7:00 A",
+        "endTime": "3:00 P",
+        "schedule": "7:00 A - 3:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57488",
+        "workgroup": "5. Peacock Bussers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Mariano L&#243;pez Garc&#237;a",
+      "date": "2026-04-09",
+      "workgroup": "5. Peacock Bussers",
+      "before": {
+        "name": "Mariano L&#243;pez Garc&#237;a",
+        "role": "Peacock Busser",
+        "date": "2026-04-09",
+        "startTime": "8:00 A",
+        "endTime": "4:00 P",
+        "schedule": "8:00 A - 4:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57488",
+        "workgroup": "5. Peacock Bussers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Grant Papazian",
+      "date": "2026-04-09",
+      "workgroup": "6. Peacock Runners",
+      "before": {
+        "name": "Grant Papazian",
+        "role": "Peacock Runner",
+        "date": "2026-04-09",
+        "startTime": "12:00 P",
+        "endTime": "8:00 P",
+        "schedule": "12:00 P - 8:00 P",
+        "position": "PK RUNNER",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57489",
+        "workgroup": "6. Peacock Runners",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Karen Sanchez",
+      "date": "2026-04-09",
+      "workgroup": "6. Peacock Runners",
+      "before": {
+        "name": "Karen Sanchez",
+        "role": "Peacock Runner",
+        "date": "2026-04-09",
+        "startTime": "9:00 A",
+        "endTime": "5:00 P",
+        "schedule": "9:00 A - 5:00 P",
+        "position": "MB",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57489",
+        "workgroup": "6. Peacock Runners",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Alannah Hochstetler",
+      "date": "2026-04-09",
+      "workgroup": "6. Peacock Runners",
+      "before": {
+        "name": "Alannah Hochstetler",
+        "role": "Peacock Runner",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "10:30 P",
+        "schedule": "4:00 P - 10:30 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57489",
+        "workgroup": "6. Peacock Runners",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Maxwell Houston",
+      "date": "2026-04-09",
+      "workgroup": "6. Peacock Runners",
+      "before": {
+        "name": "Maxwell Houston",
+        "role": "Peacock Runner",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "10:30 P",
+        "schedule": "4:00 P - 10:30 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57489",
+        "workgroup": "6. Peacock Runners",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Osvaldo Martinez",
+      "date": "2026-04-09",
+      "workgroup": "6. Peacock Runners",
+      "before": {
+        "name": "Osvaldo Martinez",
+        "role": "Peacock Runner",
+        "date": "2026-04-09",
+        "startTime": "8:00 A",
+        "endTime": "4:00 P",
+        "schedule": "8:00 A - 4:00 P",
+        "position": "PK RUNNER",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57489",
+        "workgroup": "6. Peacock Runners",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Marshall Kemp",
+      "date": "2026-04-09",
+      "workgroup": "4. Banquet Bartenders",
+      "before": {
+        "name": "Marshall Kemp",
+        "role": "Mixologist",
+        "date": "2026-04-09",
+        "startTime": "4:00 P",
+        "endTime": "1:00 A",
+        "schedule": "4:00 P - 1:00 A",
+        "position": "SVC WELL",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57430",
+        "workgroup": "4. Banquet Bartenders",
+        "departmentId": "27392",
+        "department": "Banquet"
+      }
+    },
+    {
+      "name": "Ponce Soldevila Hernan",
+      "date": "2026-04-09",
+      "workgroup": "1. Goldies Mixologist",
+      "before": {
+        "name": "Ponce Soldevila Hernan",
+        "role": "Mixologist",
+        "date": "2026-04-09",
+        "startTime": "3:00 P",
+        "endTime": "1:00 A",
+        "schedule": "3:00 P - 1:00 A",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "65903",
+        "workgroup": "1. Goldies Mixologist",
+        "departmentId": "27394",
+        "department": "Goldies"
+      }
+    },
+    {
+      "name": "Kevin Burch",
+      "date": "2026-04-09",
+      "workgroup": "1. Goldies Mixologist",
+      "before": {
+        "name": "Kevin Burch",
+        "role": "Mixologist",
+        "date": "2026-04-09",
+        "startTime": "5:00 P",
+        "endTime": "1:00 A",
+        "schedule": "5:00 P - 1:00 A",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "65903",
+        "workgroup": "1. Goldies Mixologist",
+        "departmentId": "27394",
+        "department": "Goldies"
+      }
+    },
+    {
+      "name": "Juno Aldana",
+      "date": "2026-04-09",
+      "workgroup": "4. Goldie's Host",
+      "before": {
+        "name": "Juno Aldana",
+        "role": "Goldie&#39;s Host",
+        "date": "2026-04-09",
+        "startTime": "3:30 P",
+        "endTime": "12:00 A",
+        "schedule": "3:30 P - 12:00 A",
+        "position": "GOLDIES HOST",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "59280",
+        "workgroup": "4. Goldie's Host",
+        "departmentId": "27394",
+        "department": "Goldies"
+      }
+    },
+    {
+      "name": "Dodd Bates",
+      "date": "2026-04-09",
+      "workgroup": "Quill Room",
+      "before": {
+        "name": "Dodd Bates",
+        "role": "Quill Room Host",
+        "date": "2026-04-09",
+        "startTime": "5:00 P",
+        "endTime": "10:30 P",
+        "schedule": "5:00 P - 10:30 P",
+        "position": "Peacock Host",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "65907",
+        "workgroup": "Quill Room",
+        "departmentId": "29070",
+        "department": "Quill Room"
+      }
+    },
+    {
+      "name": "Juno Aldana",
+      "date": "2026-04-09",
+      "workgroup": "Quill Room",
+      "before": {
+        "name": "Juno Aldana",
+        "role": "Quill Room Host",
+        "date": "2026-04-09",
+        "startTime": "3:30 P",
+        "endTime": "12:00 A",
+        "schedule": "3:30 P - 12:00 A",
+        "position": "GOLDIES HOST",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "65907",
+        "workgroup": "Quill Room",
+        "departmentId": "29070",
+        "department": "Quill Room"
+      }
+    },
+    {
+      "name": "Joshua Loewen",
+      "date": "2026-04-09",
+      "workgroup": "Quill Room",
+      "before": {
+        "name": "Joshua Loewen",
+        "role": "Quill Room Mixologist",
+        "date": "2026-04-09",
+        "startTime": "9:00 A",
+        "endTime": "5:00 P",
+        "schedule": "9:00 A - 5:00 P",
+        "position": "PB Bartender",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "65907",
+        "workgroup": "Quill Room",
+        "departmentId": "29070",
+        "department": "Quill Room"
+      }
+    },
+    {
+      "name": "Marilyn Huerta",
+      "date": "2026-04-10",
+      "workgroup": "Peacock Barback",
+      "before": {
+        "name": "Marilyn Huerta",
+        "role": "PB Barback",
+        "date": "2026-04-10",
+        "startTime": "9:00 A",
+        "endTime": "4:00 P",
+        "schedule": "9:00 A - 4:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "81129",
+        "workgroup": "Peacock Barback",
+        "departmentId": "27409",
+        "department": "The Peacock Lounge"
+      }
+    },
+    {
+      "name": "Shea Pardo",
+      "date": "2026-04-10",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Shea Pardo",
+        "role": "Peacock Server",
+        "date": "2026-04-10",
+        "startTime": "4:00 P",
+        "endTime": "11:00 P",
+        "schedule": "4:00 P - 11:00 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Maxwell Houston",
+      "date": "2026-04-12",
+      "workgroup": "6. Peacock Runners",
+      "before": {
+        "name": "Maxwell Houston",
+        "role": "Peacock Runner",
+        "date": "2026-04-12",
+        "startTime": "4:00 P",
+        "endTime": "10:30 P",
+        "schedule": "4:00 P - 10:30 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57489",
+        "workgroup": "6. Peacock Runners",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    },
+    {
+      "name": "Tristan Scott Seghpossian",
+      "date": "2026-04-16",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "name": "Tristan Scott Seghpossian",
+        "role": "Peacock Server",
+        "date": "2026-04-16",
+        "startTime": "8:00 A",
+        "endTime": "4:30 P",
+        "schedule": "8:00 A - 4:30 P",
+        "position": "",
+        "cellColor": "#FFFFFF",
+        "workgroupId": "57487",
+        "workgroup": "4. Peacock Servers",
+        "departmentId": "27388",
+        "department": "The Peacock"
+      }
+    }
+  ],
+  "timeChanges": [
+    {
+      "name": "Annalyssa Aranda",
+      "date": "2026-04-18",
+      "workgroup": "Peacock Bar",
+      "before": {
+        "startTime": "10:00 A",
+        "endTime": "4:00 P"
+      },
+      "after": {
+        "startTime": "4:00 P",
+        "endTime": "12:00 A"
+      }
+    },
+    {
+      "name": "Christopher Acosta",
+      "date": "2026-04-19",
+      "workgroup": "Peacock Bar",
+      "before": {
+        "startTime": "10:00 A",
+        "endTime": "4:00 P"
+      },
+      "after": {
+        "startTime": "4:00 P",
+        "endTime": "1:00 A"
+      }
+    }
+  ],
+  "positionChanges": [
+    {
+      "name": "Annalyssa Aranda",
+      "date": "2026-04-18",
+      "workgroup": "Peacock Bar",
+      "before": {
+        "position": ""
+      },
+      "after": {
+        "position": "PATIO BAR"
+      }
+    },
+    {
+      "name": "Christopher Acosta",
+      "date": "2026-04-19",
+      "workgroup": "Peacock Bar",
+      "before": {
+        "position": ""
+      },
+      "after": {
+        "position": "BARTOP"
+      }
+    }
+  ],
+  "statusChanges": [
+    {
+      "name": "Hannah Hilligiest",
+      "date": "2026-04-17",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "schedule": "8:00 A - 4:30 P",
+        "startTime": "8:00 A",
+        "endTime": "4:30 P"
+      },
+      "after": {
+        "schedule": "OffVac",
+        "startTime": "",
+        "endTime": ""
+      }
+    },
+    {
+      "name": "Hannah Hilligiest",
+      "date": "2026-04-18",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "schedule": "8:00 A - 4:30 P",
+        "startTime": "8:00 A",
+        "endTime": "4:30 P"
+      },
+      "after": {
+        "schedule": "OffVac",
+        "startTime": "",
+        "endTime": ""
+      }
+    },
+    {
+      "name": "Hannah Hilligiest",
+      "date": "2026-04-19",
+      "workgroup": "4. Peacock Servers",
+      "before": {
+        "schedule": "8:00 A - 4:30 P",
+        "startTime": "8:00 A",
+        "endTime": "4:30 P"
+      },
+      "after": {
+        "schedule": "OffVac",
+        "startTime": "",
+        "endTime": ""
+      }
+    }
+  ],
+  "marshallImpacted": true,
+  "rawDiff": {
+    "added": 1,
+    "removed": 48,
+    "timeChanges": 2,
+    "positionChanges": 2,
+    "statusChanges": 3
+  },
+  "summary": "[Ollama timed out after 5 minutes]"
+}
