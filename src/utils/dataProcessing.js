@@ -370,6 +370,27 @@ export function getUniqueWorkgroups(data) {
   return [...wgs].sort();
 }
 
+// Build a mapping of employee name → primary workgroup (most frequent)
+export function getEmployeeWorkgroups(data) {
+  if (!data || !data.length) return {};
+  const counts = {}; // name → { workgroup → count }
+  data.forEach(r => {
+    if (!r.name || !r.workgroup) return;
+    if (!counts[r.name]) counts[r.name] = {};
+    const wg = cleanWorkgroupName(r.workgroup);
+    counts[r.name][wg] = (counts[r.name][wg] || 0) + 1;
+  });
+  const result = {};
+  Object.entries(counts).forEach(([name, wgs]) => {
+    let best = null, max = 0;
+    Object.entries(wgs).forEach(([wg, c]) => {
+      if (c > max) { max = c; best = wg; }
+    });
+    if (best) result[name] = best;
+  });
+  return result;
+}
+
 export const ALL_OUTLETS = ['All', 'Peacock', 'Kappo Kappo', 'Goldies', 'Quill', 'Peacock Patio', 'Banquet'];
 
 export const OUTLET_COLORS = {

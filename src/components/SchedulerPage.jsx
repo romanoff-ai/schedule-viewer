@@ -13,6 +13,7 @@ import {
   getNextMonday,
   formatDateISO,
 } from '../utils/schedulerUtils';
+import { getEmployeeWorkgroups } from '../utils/dataProcessing';
 
 const PREFS_STORAGE_KEY = 'schedule-viewer-preferences';
 const RANKINGS_STORAGE_KEY = 'schedule-viewer-rankings';
@@ -57,6 +58,8 @@ export default function SchedulerPage({ data }) {
     if (!data || data.length === 0) return {};
     return analyzeEmployeeHistory(data);
   }, [data]);
+
+  const employeeWorkgroups = useMemo(() => getEmployeeWorkgroups(data), [data]);
 
   // Initialize preferences from localStorage or history
   useEffect(() => {
@@ -199,6 +202,7 @@ export default function SchedulerPage({ data }) {
           rankings={rankings}
           onChange={handleRankingsChange}
           employeeNames={Object.keys(preferences).sort()}
+          employeeWorkgroups={employeeWorkgroups}
         />
       )}
 
