@@ -276,7 +276,9 @@ export function processData(rawData, eventionLookup) {
     let outlet = detectOutlet(record.position);
 
     // If position is Unassigned, try to derive from workgroup + Evention verification
-    if (pos === 'Unassigned' && wg && eventionLookup) {
+    // Only verify workgroups that Evention covers (Peacock tip pool report)
+    const EVENTION_VERIFIED_WORKGROUPS = ['Peacock Bar', 'Goldies Mixologist', 'Quill Room'];
+    if (pos === 'Unassigned' && wg && eventionLookup && EVENTION_VERIFIED_WORKGROUPS.includes(wg)) {
       const derivedOutlet = WORKGROUP_OUTLET_MAP[wg];
       if (derivedOutlet) {
         // Check Evention data: does this employee have tip data for this date?
