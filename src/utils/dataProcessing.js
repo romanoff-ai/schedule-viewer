@@ -10,6 +10,21 @@ const OUTLET_RULES = [
   { patterns: ['Mixologist'], outlet: 'Quill' },
 ];
 
+// Workgroup → Outlet mapping (used when position is blank/generic + Evention confirms the shift)
+const WORKGROUP_OUTLET_MAP = {
+  'Goldies Mixologist': 'Goldies',
+  'Peacock Bar': 'Peacock',
+  'Quill Room': 'Quill',
+  'Banquet Bartenders': 'Banquet',
+  'Banquet': 'Banquet',
+};
+
+// Generic position values that don't tell us the specific station
+const GENERIC_POSITIONS = new Set([
+  '', 'PB BARTENDER', 'GOLDIES MIXOLOGIST', 'MIXOLOGIST',
+  'BARTENDER', 'QUILL ROOM', 'PEACOCK BAR',
+]);
+
 // Position cleaning rules
 const POSITION_MAP = [
   { patterns: ['BARTOP', 'BAR TOP', 'BAR'], clean: 'Bar Top' },
@@ -18,9 +33,10 @@ const POSITION_MAP = [
   { patterns: ['PATIO BAR'], clean: 'Patio Bar' },
   { patterns: ['KAPPO'], clean: 'Kappo' },
   { patterns: ['GOLDIES', "GOLDIE'S", 'GOLDIE&#39;S'], clean: 'Goldies' },
-  { patterns: ['QUILL'], clean: 'Quill' },
+  { patterns: ['QUILL BAR', 'QUILL'], clean: 'Quill' },
   { patterns: ['CLOSER'], clean: 'Closer' },
   { patterns: ['SATELLITE BAR'], clean: 'Satellite Bar' },
+  { patterns: ['EVENT'], clean: 'Event' },
   { patterns: ['Mixologist'], clean: 'Mixologist' },
   { patterns: ['PK BAR', 'PK'], clean: 'PK Bar' },
   { patterns: ['BARBACK'], clean: 'Barback' },
@@ -41,7 +57,18 @@ export function detectOutlet(raw) {
 
 export function cleanPosition(raw) {
   if (!raw) return 'Unassigned';
-  const upper = raw.toUpperCase();
+
+  // Handle comma-separated values like "BARTOP, PB Bartender" — extract the section part
+  let toClean = raw;
+  if (raw.includes(',')) {
+    const section = raw.split(',')[0].trim();
+    // Only use section if it's a meaningful station name (not just a role)
+    if (section && !GENERIC_POSITIONS.has(section.toUpperCase())) {
+      toClean = section;
+    }
+  }
+
+  const upper = toClean.toUpperCase();
   for (const { patterns, clean } of POSITION_MAP) {
     for (const p of patterns) {
       if (upper === p.toUpperCase() || upper.startsWith(p.toUpperCase() + ' ') || upper.startsWith(p.toUpperCase() + '/')) {
@@ -62,6 +89,13 @@ export const POSITION_COLORS = {
   'Goldies': '#eab308',
   'Quill': '#06b6d4',
   'Closer': '#ec4899',
+  'Event': '#f59e0b',
+  'Peacock': '#60a5fa',
+  'Banquet': '#8b5cf6',
+  'Satellite Bar': '#14b8a6',
+  'PK Bar': '#f472b6',
+  'Barback': '#a78bfa',
+  'Mixologist': '#34d399',
   'Training': '#64748b',
   'Unassigned': '#475569',
 };
@@ -218,15 +252,57 @@ export function deduplicateData(rawData) {
   return deduped;
 }
 
-export function processData(rawData) {
+// Build a lookup: schedName → Set of YYYY-MM-DD dates with Evention tip records
+export function buildEventionLookup(eventionShifts, employeeMapping) {
+  if (!eventionShifts || !employeeMapping) return {};
+  const lookup = {}; // schedName → Set<dateStr>
+  for (const [empId, mapping] of Object.entries(employeeMapping)) {
+    const schedName = mapping.schedName;
+    const shifts = eventionShifts[empId];
+    if (!schedName || !shifts) continue;
+    if (!lookup[schedName]) lookup[schedName] = new Set();
+    for (const s of shifts) {
+      if (s.date) lookup[schedName].add(s.date);
+    }
+  }
+  return lookup;
+}
+
+export function processData(rawData, eventionLookup) {
   return rawData.map(record => {
     const normalizedDate = normalizeDate(record.date);
+    const wg = cleanWorkgroupName(record.workgroup);
+    let pos = cleanPosition(record.position);
+    let outlet = detectOutlet(record.position);
+
+    // If position is Unassigned, try to derive from workgroup + Evention verification
+    if (pos === 'Unassigned' && wg && eventionLookup) {
+      const derivedOutlet = WORKGROUP_OUTLET_MAP[wg];
+      if (derivedOutlet) {
+        // Check Evention data: does this employee have tip data for this date?
+        const empDates = eventionLookup[record.name];
+        // Convert schedule date to YYYY-MM-DD for Evention lookup
+        const nd = normalizedDate; // MM/DD/YYYY
+        let isoDate = null;
+        if (nd) {
+          const [m, d, y] = nd.split('/');
+          isoDate = `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+        }
+        if (empDates && isoDate && empDates.has(isoDate)) {
+          // Confirmed via Evention — assign the outlet as the position
+          pos = derivedOutlet;
+          outlet = derivedOutlet;
+        }
+        // else: no Evention data for this date → stays Unassigned
+      }
+    }
+
     return {
       ...record,
       date: normalizedDate,
-      workgroup: cleanWorkgroupName(record.workgroup),
-      cleanPosition: cleanPosition(record.position),
-      outlet: detectOutlet(record.position),
+      workgroup: wg,
+      cleanPosition: pos,
+      outlet: outlet,
       hours: calculateHours(record.startTime, record.endTime),
       parsedDate: parseDate(normalizedDate),
       isWorking: isWorkingShift(record),

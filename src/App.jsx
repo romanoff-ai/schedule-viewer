@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { processData, deduplicateData } from './utils/dataProcessing';
+import { processData, deduplicateData, buildEventionLookup } from './utils/dataProcessing';
 import NavBar from './components/NavBar';
 import AnalyticsPage from './components/AnalyticsPage';
 import SchedulerPage from './components/SchedulerPage';
@@ -11,12 +11,15 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/schedule-data.json')
-      .then(r => r.json())
-      .then(data => {
-        setRawData(processData(deduplicateData(data)));
-        setLoading(false);
-      });
+    Promise.all([
+      fetch('/schedule-data.json').then(r => r.json()),
+      fetch('/evention-shifts.json').then(r => r.json()).catch(() => null),
+      fetch('/employee-mapping.json').then(r => r.json()).catch(() => null),
+    ]).then(([data, eventionShifts, employeeMapping]) => {
+      const eventionLookup = buildEventionLookup(eventionShifts, employeeMapping);
+      setRawData(processData(deduplicateData(data), eventionLookup));
+      setLoading(false);
+    });
   }, []);
 
   if (loading) {
